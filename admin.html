@@ -17,6 +17,7 @@
   }
   body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 4rem; }
 
+  /* LOGIN */
   .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
   .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 380px; text-align: center; }
   .login-icon { font-size: 2.5rem; margin-bottom: 1rem; }
@@ -28,22 +29,27 @@
   .login-btn:hover { background: #001f52; }
   .login-error { font-size: 0.8rem; color: var(--red); margin-top: 8px; display: none; }
 
+  /* SHELL */
   .admin-wrap { display: none; }
   .topbar { background: var(--navy); padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
   .topbar-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
   .topbar-sub { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+  .topbar-right { display: flex; gap: 8px; align-items: center; }
   .logout-btn { font-size: 0.75rem; color: rgba(255,255,255,0.6); background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 4px 12px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+  .refresh-btn { font-size: 0.75rem; color: rgba(255,255,255,0.8); background: none; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 4px 12px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
   .container { max-width: 680px; margin: 0 auto; padding: 0 1rem; }
+  .loading-screen { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; }
+  .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem 1.5rem; margin-top: 1.25rem; }
   .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
-
   .stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1.25rem; }
   .stat-box { background: var(--bg); border-radius: 12px; padding: 0.9rem 1rem; text-align: center; }
   .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
   .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
-  /* 계좌 설정 */
+  /* 계좌 */
   .field-row { display: grid; grid-template-columns: 90px 1fr; gap: 8px; align-items: center; margin-bottom: 10px; }
   .field-label { font-size: 0.8rem; color: var(--muted); }
   .field-input { height: 40px; border: 1.5px solid var(--border); border-radius: 10px; padding: 0 12px; font-size: 0.88rem; font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); width: 100%; }
@@ -51,21 +57,16 @@
   .field-input.fee-input { font-weight: 700; color: var(--red); }
   .save-account-btn { width: 100%; height: 42px; margin-top: 14px; background: var(--navy); color: #fff; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
   .save-account-btn:hover { background: #001f52; }
+  .save-account-btn:disabled { background: var(--muted); cursor: not-allowed; }
 
-  /* 경기 OPEN/CLOSE 토글 */
-  .match-control-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 13px 0; border-bottom: 1px solid var(--border);
-  }
+  /* Open/Close */
+  .match-control-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); }
   .match-control-row:last-child { border-bottom: none; }
   .mc-info { flex: 1; }
   .mc-name { font-size: 0.9rem; font-weight: 700; }
   .mc-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-  .mc-status {
-    font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-    white-space: nowrap; letter-spacing: 0.3px;
-  }
-  .mc-status.open  { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .mc-status { font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+  .mc-status.open   { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
   .mc-status.closed { background: #FFE8E8; color: var(--red); border: 1px solid #F5C0CC; }
   .mc-toggle-wrap { display: flex; align-items: center; gap: 8px; }
   .mc-toggle-label { font-size: 0.72rem; color: var(--muted); }
@@ -75,6 +76,35 @@
   .ts-thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
   .toggle-switch input:checked ~ .ts-track { background: var(--green); }
   .toggle-switch input:checked ~ .ts-thumb { transform: translateX(22px); }
+
+  /* 참가자 관리 */
+  .participant-manage-row { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .participant-manage-row:last-child { margin-bottom: 0; }
+  .pmr-main { display: flex; align-items: center; gap: 12px; padding: 11px 14px; }
+  .pmr-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .pmr-scores { font-size: 0.72rem; color: var(--muted); line-height: 1.7; margin-top: 2px; }
+  .pmr-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .btn-edit   { height: 32px; padding: 0 12px; background: #EDF1FF; color: var(--navy); border: 1px solid #B8C8F0; border-radius: 8px; font-size: 0.75rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
+  .btn-edit:hover { background: #D8E4FF; }
+  .btn-delete { height: 32px; padding: 0 12px; background: #FFE8E8; color: var(--red); border: 1px solid #F5C0CC; border-radius: 8px; font-size: 0.75rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
+  .btn-delete:hover { background: #FFD0D0; }
+  .pmr-edit-form { display: none; background: #F8F9FF; border-top: 1px solid var(--border); padding: 14px; }
+  .pmr-edit-form.open { display: block; }
+  .edit-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .edit-label { font-size: 0.75rem; color: var(--muted); min-width: 60px; }
+  .edit-name-input { height: 36px; border: 1.5px solid var(--border); border-radius: 8px; padding: 0 10px; font-size: 0.85rem; font-family: 'Noto Sans KR', sans-serif; background: #fff; color: var(--text); flex: 1; min-width: 100px; }
+  .edit-name-input:focus { outline: none; border-color: var(--navy); }
+  .edit-score-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .edit-match-label { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+  .edit-score-input { width: 38px; height: 36px; text-align: center; font-size: 1rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; border: 1.5px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); -moz-appearance: textfield; }
+  .edit-score-input:focus { outline: none; border-color: var(--navy); }
+  .edit-score-input::-webkit-outer-spin-button, .edit-score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .edit-score-sep { font-size: 0.9rem; font-weight: 700; color: var(--muted); }
+  .edit-btn-row { display: flex; gap: 8px; margin-top: 4px; }
+  .btn-save-edit   { height: 36px; padding: 0 16px; background: var(--navy); color: #fff; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
+  .btn-save-edit:hover { background: #001f52; }
+  .btn-save-edit:disabled { background: var(--muted); cursor: not-allowed; }
+  .btn-cancel-edit { height: 36px; padding: 0 16px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
 
   /* 입금 토글 */
   .payment-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; }
@@ -89,7 +119,7 @@
   .payment-toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
   .paid-chip { font-size: 0.65rem; font-weight: 700; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 10px; padding: 1px 7px; margin-left: 4px; }
 
-  /* 경기 결과 입력 */
+  /* 경기 결과 */
   .match-result-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
   .match-result-row:last-child { border-bottom: none; }
   .mr-info { flex: 1; }
@@ -102,9 +132,9 @@
   .score-sep { font-size: 1rem; font-weight: 700; color: var(--muted); }
   .save-btn { width: 100%; height: 44px; margin-top: 1rem; background: var(--red); color: #fff; border: none; border-radius: 12px; font-size: 0.88rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
   .save-btn:hover { background: #a80c25; }
+  .save-btn:disabled { background: var(--muted); cursor: not-allowed; }
 
   /* 상금 현황 */
-  .prize-breakdown { margin-top: 0; }
   .prize-match-block { background: var(--bg); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 10px; }
   .prize-match-block:last-child { margin-bottom: 0; }
   .pmb-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 8px; }
@@ -117,9 +147,9 @@
   .pmb-winners { font-size: 0.78rem; color: var(--muted); }
   .winner-row { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
   .winner-name-tag { font-weight: 700; color: var(--navy); }
-  .exact-chip { font-size: 0.65rem; font-weight: 700; background: #E6F0FF; color: var(--navy); border-radius: 8px; padding: 1px 7px; }
+  .exact-chip    { font-size: 0.65rem; font-weight: 700; background: #E6F0FF; color: var(--navy); border-radius: 8px; padding: 1px 7px; }
   .rollover-chip { font-size: 0.65rem; font-weight: 700; background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); border-radius: 8px; padding: 1px 7px; }
-  .pending-chip { font-size: 0.65rem; font-weight: 700; background: var(--bg); color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 1px 7px; }
+  .pending-chip  { font-size: 0.65rem; font-weight: 700; background: var(--bg); color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 1px 7px; }
 
   .final-banner { border-radius: 14px; padding: 1.1rem 1.25rem; margin-top: 1.25rem; text-align: center; display: none; }
   .final-banner.all-split { background: #EDF1FF; border: 1.5px solid #B8C8F0; }
@@ -129,75 +159,11 @@
 
   .export-btn { height: 40px; padding: 0 18px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 0.8rem; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
   .export-btn:hover { background: #EAEAE6; }
-
-  /* 참가자 관리 */
-  .participant-manage-row {
-    border: 1px solid var(--border); border-radius: 12px;
-    margin-bottom: 10px; overflow: hidden;
-  }
-  .participant-manage-row:last-child { margin-bottom: 0; }
-  .pmr-main {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 14px;
-  }
-  .pmr-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); flex: 1; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .pmr-scores { font-size: 0.72rem; color: var(--muted); line-height: 1.7; margin-top: 2px; }
-  .pmr-actions { display: flex; gap: 6px; flex-shrink: 0; }
-  .btn-edit {
-    height: 32px; padding: 0 12px; background: #EDF1FF; color: var(--navy);
-    border: 1px solid #B8C8F0; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer;
-  }
-  .btn-edit:hover { background: #D8E4FF; }
-  .btn-delete {
-    height: 32px; padding: 0 12px; background: #FFE8E8; color: var(--red);
-    border: 1px solid #F5C0CC; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer;
-  }
-  .btn-delete:hover { background: #FFD0D0; }
-
-  /* 인라인 편집 폼 */
-  .pmr-edit-form {
-    display: none; background: #F8F9FF;
-    border-top: 1px solid var(--border); padding: 14px;
-  }
-  .pmr-edit-form.open { display: block; }
-  .edit-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  .edit-label { font-size: 0.75rem; color: var(--muted); min-width: 60px; }
-  .edit-name-input {
-    height: 36px; border: 1.5px solid var(--border); border-radius: 8px;
-    padding: 0 10px; font-size: 0.85rem; font-family: 'Noto Sans KR', sans-serif;
-    background: #fff; color: var(--text); flex: 1; min-width: 100px;
-  }
-  .edit-name-input:focus { outline: none; border-color: var(--navy); }
-  .edit-score-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .edit-match-label { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
-  .edit-score-input {
-    width: 38px; height: 36px; text-align: center; font-size: 1rem; font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif; border: 1.5px solid var(--border);
-    border-radius: 8px; background: #fff; color: var(--text); -moz-appearance: textfield;
-  }
-  .edit-score-input:focus { outline: none; border-color: var(--navy); }
-  .edit-score-input::-webkit-outer-spin-button,
-  .edit-score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-  .edit-score-sep { font-size: 0.9rem; font-weight: 700; color: var(--muted); }
-  .edit-score-na { font-size: 0.75rem; color: var(--muted); font-style: italic; }
-  .edit-btn-row { display: flex; gap: 8px; margin-top: 4px; }
-  .btn-save-edit {
-    height: 36px; padding: 0 16px; background: var(--navy); color: #fff;
-    border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer;
-  }
-  .btn-save-edit:hover { background: #001f52; }
-  .btn-cancel-edit {
-    height: 36px; padding: 0 16px; background: var(--bg); color: var(--muted);
-    border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer;
-  }
-
   .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; font-size: 0.85rem; font-weight: 500; padding: 10px 22px; border-radius: 30px; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 999; white-space: nowrap; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .empty { text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.85rem; }
+  .saving-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; z-index: 9999; display: none; }
+  .saving-box { background: #fff; border-radius: 14px; padding: 1.5rem 2rem; text-align: center; font-size: 0.9rem; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -219,256 +185,191 @@
       <div class="topbar-title">⚽ 2026 월드컵 내기 관리자</div>
       <div class="topbar-sub">한국 A조 조별예선</div>
     </div>
-    <button class="logout-btn" onclick="logout()">로그아웃</button>
+    <div class="topbar-right">
+      <button class="refresh-btn" onclick="reloadData()">🔄 새로고침</button>
+      <button class="logout-btn" onclick="logout()">로그아웃</button>
+    </div>
   </div>
 
-  <div class="container">
-
-    <div class="stat-strip">
-      <div class="stat-box"><div class="stat-num" id="stat-count">0</div><div class="stat-lbl">참가자</div></div>
-      <div class="stat-box"><div class="stat-num" id="stat-paid">0/0</div><div class="stat-lbl">입금 완료</div></div>
-      <div class="stat-box"><div class="stat-num" id="stat-prize">0</div><div class="stat-lbl">총 상금 (원)</div></div>
-    </div>
-
-    <!-- 경기 예측 OPEN / CLOSE -->
-    <div class="section-card">
-      <div class="section-label">경기별 예측 접수 Open / Close</div>
-      <div id="match-controls"></div>
-    </div>
-
-    <!-- 계좌 설정 -->
-    <div class="section-card">
-      <div class="section-label">입금 계좌 설정</div>
-      <div class="field-row"><label class="field-label">은행명</label><input type="text" class="field-input" id="cfg-bank" placeholder="예) 카카오뱅크"></div>
-      <div class="field-row"><label class="field-label">계좌번호</label><input type="text" class="field-input" id="cfg-account" placeholder="예) 3333-12-3456789"></div>
-      <div class="field-row"><label class="field-label">예금주</label><input type="text" class="field-input" id="cfg-holder" placeholder="예) 홍길동"></div>
-      <div class="field-row"><label class="field-label">참가비 (원)</label><input type="number" class="field-input fee-input" id="cfg-fee" placeholder="5000" min="0"></div>
-      <button class="save-account-btn" onclick="saveAccount()">계좌 정보 저장 → 참가자 페이지에 즉시 반영</button>
-    </div>
-
-    <!-- 참가자 관리 (수정/삭제) -->
-    <div class="section-card">
-      <div class="section-label">참가자 관리</div>
-      <div style="font-size:0.8rem; color:var(--muted); margin-bottom:12px;" id="participant-manage-summary"></div>
-      <div id="participant-manage-list"><div class="empty">참가자가 없습니다</div></div>
-    </div>
-
-    <!-- 입금 확인 -->
-    <div class="section-card">
-      <div class="section-label">입금 확인 관리</div>
-      <div style="font-size:0.8rem; color:var(--muted); margin-bottom:12px;" id="payment-summary"></div>
-      <div id="payment-list"><div class="empty">참가자가 없습니다</div></div>
-    </div>
-
-    <!-- 경기 결과 입력 -->
-    <div class="section-card">
-      <div class="section-label">실제 경기 결과 입력</div>
-      <div class="match-result-row">
-        <div class="mr-info"><div class="mr-name">🇰🇷 대한민국 vs 체코 🇨🇿</div><div class="mr-date">6월 12일(금) · 과달라하라</div></div>
-        <div class="score-box">
-          <input type="number" class="score-input" id="r1a" min="0" max="20" placeholder="–">
-          <span class="score-sep">:</span>
-          <input type="number" class="score-input" id="r1b" min="0" max="20" placeholder="–">
-        </div>
-      </div>
-      <div class="match-result-row">
-        <div class="mr-info"><div class="mr-name">🇰🇷 대한민국 vs 멕시코 🇲🇽</div><div class="mr-date">6월 19일(금) · 과달라하라</div></div>
-        <div class="score-box">
-          <input type="number" class="score-input" id="r2a" min="0" max="20" placeholder="–">
-          <span class="score-sep">:</span>
-          <input type="number" class="score-input" id="r2b" min="0" max="20" placeholder="–">
-        </div>
-      </div>
-      <div class="match-result-row">
-        <div class="mr-info"><div class="mr-name">🇰🇷 대한민국 vs 남아공 🇿🇦</div><div class="mr-date">6월 25일(목) · 몬테레이</div></div>
-        <div class="score-box">
-          <input type="number" class="score-input" id="r3a" min="0" max="20" placeholder="–">
-          <span class="score-sep">:</span>
-          <input type="number" class="score-input" id="r3b" min="0" max="20" placeholder="–">
-        </div>
-      </div>
-      <button class="save-btn" onclick="saveResults()">결과 저장 &amp; 상금 계산</button>
-    </div>
-
-    <!-- 경기별 상금 현황 -->
-    <div class="section-card">
-      <div class="section-label">
-        <span>경기별 상금 현황</span>
-        <button class="export-btn" onclick="copyResults()">📋 결과 복사</button>
-      </div>
-      <div class="prize-breakdown" id="prize-breakdown"><div class="empty">참가자가 없습니다</div></div>
-    </div>
-
-    <div class="final-banner" id="final-banner">
-      <div class="final-trophy" id="final-trophy"></div>
-      <div class="final-name" id="final-name"></div>
-      <div class="final-sub" id="final-sub"></div>
-    </div>
-
-    <div style="text-align:center; margin-top:1.5rem;">
-      <button class="export-btn" style="color:#C8102E; border-color:#F5C0CC;" onclick="clearAll()">⚠️ 전체 데이터 초기화</button>
-    </div>
-
+  <div class="container" id="admin-content">
+    <div class="loading-screen"><div class="spinner"></div>불러오는 중...</div>
   </div>
+</div>
+
+<div class="saving-overlay" id="saving-overlay">
+  <div class="saving-box"><div class="spinner" style="margin-bottom:0.5rem;"></div>저장 중...</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const STORAGE_KEY = 'wc2026_picks';
-  const RESULT_KEY  = 'wc2026_results';
-  const ACCOUNT_KEY = 'wc2026_account';
-  const PAYMENT_KEY = 'wc2026_payments';
-  const STATUS_KEY  = 'wc2026_status';   // { open: [true/false, true/false, true/false] }
-  const ADMIN_PW    = 'goal2026';         // ← 비밀번호 여기서 변경
+const API   = 'https://api.anthropic.com/v1/messages';
+const MODEL = 'claude-sonnet-4-20250514';
+const STORE_KEY = 'wc2026_store';
+const ADMIN_PW  = 'goal2026'; // ← 비밀번호 여기서 변경
 
-  const MATCH_INFO = [
-    { label: '1차전 🇰🇷 vs 체코 🇨🇿',   emoji: '🇨🇿', short: '체코전',   date: '6월 12일(금) · 과달라하라' },
-    { label: '2차전 🇰🇷 vs 멕시코 🇲🇽', emoji: '🇲🇽', short: '멕시코전', date: '6월 19일(금) · 과달라하라' },
-    { label: '3차전 🇰🇷 vs 남아공 🇿🇦', emoji: '🇿🇦', short: '남아공전', date: '6월 25일(목) · 몬테레이' },
-  ];
+const MATCH_INFO = [
+  { label:'1차전 🇰🇷 vs 체코 🇨🇿',   short:'체코전',   date:'6월 12일(금) · 과달라하라' },
+  { label:'2차전 🇰🇷 vs 멕시코 🇲🇽', short:'멕시코전', date:'6월 19일(금) · 과달라하라' },
+  { label:'3차전 🇰🇷 vs 남아공 🇿🇦', short:'남아공전', date:'6월 25일(목) · 몬테레이' },
+];
 
-  function getPicks()    { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
-  function getResults()  { try { return JSON.parse(localStorage.getItem(RESULT_KEY))  || [null,null,null]; } catch { return [null,null,null]; } }
-  function getAccount()  { try { return JSON.parse(localStorage.getItem(ACCOUNT_KEY)) || {}; } catch { return {}; } }
-  function getPayments() { try { return JSON.parse(localStorage.getItem(PAYMENT_KEY)) || {}; } catch { return {}; } }
-  function getStatus()   { try { return JSON.parse(localStorage.getItem(STATUS_KEY))  || [false, false, false]; } catch { return [false, false, false]; } }
+const DEFAULT_STATE = {
+  account: { bank:'', account:'', holder:'', fee: 5000 },
+  matchOpen: [false, false, false],
+  picks: [], payments: {}, results: [null, null, null],
+};
 
-  function showToast(msg, dur = 2500) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), dur);
-  }
-  function login() {
-    if (document.getElementById('pw-input').value === ADMIN_PW) {
-      document.getElementById('login-wrap').style.display = 'none';
-      document.getElementById('admin-wrap').style.display = 'block';
-      loadAdmin();
-    } else {
-      document.getElementById('login-error').style.display = 'block';
-      document.getElementById('pw-input').value = '';
-    }
-  }
-  function logout() {
-    document.getElementById('login-wrap').style.display = 'flex';
-    document.getElementById('admin-wrap').style.display = 'none';
+let state = null;
+
+function showToast(msg, dur=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+function setSaving(on) {
+  document.getElementById('saving-overlay').style.display = on ? 'flex' : 'none';
+}
+
+/* ── API ── */
+async function loadState() {
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: MODEL, max_tokens: 1000,
+        system: 'You manage a key-value store. When asked to GET a key, respond with ONLY the raw JSON value stored for that key, or the exact string NULL if not found. No explanation.',
+        messages: [{ role: 'user', content: `GET ${STORE_KEY}` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c => c.text || '').join('').trim();
+    if (!text || text === 'NULL') return { ...DEFAULT_STATE };
+    return JSON.parse(text);
+  } catch(e) { return { ...DEFAULT_STATE }; }
+}
+
+async function saveState(newState) {
+  setSaving(true);
+  try {
+    await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: MODEL, max_tokens: 100,
+        system: 'You manage a key-value store. When asked to SET key value, respond only with OK.',
+        messages: [{ role: 'user', content: `SET ${STORE_KEY} ${JSON.stringify(newState)}` }]
+      })
+    });
+    state = newState;
+  } catch(e) { showToast('❌ 저장 실패. 다시 시도해주세요.'); }
+  setSaving(false);
+}
+
+/* ── 로그인 ── */
+function login() {
+  if (document.getElementById('pw-input').value === ADMIN_PW) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'block';
+    reloadData();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
     document.getElementById('pw-input').value = '';
   }
+}
+function logout() {
+  document.getElementById('login-wrap').style.display = 'flex';
+  document.getElementById('admin-wrap').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+}
+async function reloadData() {
+  document.getElementById('admin-content').innerHTML = '<div class="loading-screen"><div class="spinner"></div>불러오는 중...</div>';
+  state = await loadState();
+  renderAdmin();
+}
 
-  /* ── 경기 OPEN / CLOSE ── */
-  function toggleMatchStatus(idx, checked) {
-    const status = getStatus();
-    status[idx] = checked;
-    localStorage.setItem(STATUS_KEY, JSON.stringify(status));
-    renderMatchControls();
-    showToast(`${MATCH_INFO[idx].short} 예측 ${checked ? '🟢 OPEN' : '🔴 CLOSED'}`);
-  }
+/* ── 상금 계산 ── */
+function calcPrize(picks, results, totalPot) {
+  const perGame = Math.floor(totalPot / 3);
+  let rollover = 0;
+  const matchResults = results.map((r, i) => {
+    const gamePot = perGame + rollover;
+    if (!r) return { gamePot, winners: null, status: 'pending' };
+    const [ra, rb] = r;
+    const winners = picks.filter(p => p.scores?.[i] && p.scores[i][0] === ra && p.scores[i][1] === rb).map(p => p.name);
+    if (winners.length > 0) { rollover = 0; return { gamePot, winners, status: 'win', payout: Math.floor(gamePot / winners.length) }; }
+    rollover = gamePot;
+    return { gamePot, winners: [], status: 'rollover' };
+  });
+  const allRollover = matchResults.every(m => m.status === 'rollover');
+  const finalBanner = allRollover && picks.length ? { type: 'allSplit', amount: Math.floor(totalPot / picks.length) } : null;
+  return { matchResults, finalBanner };
+}
 
-  function renderMatchControls() {
-    const status = getStatus();
-    document.getElementById('match-controls').innerHTML = MATCH_INFO.map((m, i) => {
-      const isOpen = status[i];
-      return `<div class="match-control-row">
-        <div class="mc-info">
-          <div class="mc-name">${m.label}</div>
-          <div class="mc-date">${m.date}</div>
-        </div>
-        <span class="mc-status ${isOpen ? 'open' : 'closed'}">${isOpen ? '🟢 OPEN' : '🔴 CLOSED'}</span>
-        <div class="mc-toggle-wrap">
-          <span class="mc-toggle-label">${isOpen ? '접수중' : '마감'}</span>
-          <label class="toggle-switch">
-            <input type="checkbox" ${isOpen ? 'checked' : ''} onchange="toggleMatchStatus(${i}, this.checked)">
-            <div class="ts-track"></div>
-            <div class="ts-thumb"></div>
-          </label>
-        </div>
-      </div>`;
-    }).join('');
-  }
+/* ── 전체 렌더 ── */
+function renderAdmin() {
+  const { account, matchOpen, picks, payments, results } = state;
+  const fee = account?.fee || 5000;
+  const totalPot = picks.length * fee;
+  const paidCount = picks.filter(p => payments[p.name]).length;
 
-  /* ── 계좌 설정 ── */
-  function saveAccount() {
-    const acc = {
-      bank: document.getElementById('cfg-bank').value.trim(),
-      account: document.getElementById('cfg-account').value.trim(),
-      holder: document.getElementById('cfg-holder').value.trim(),
-      fee: parseInt(document.getElementById('cfg-fee').value) || 5000,
-    };
-    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(acc));
-    showToast('✅ 계좌 정보 저장됨');
-    loadAdmin();
-  }
+  let html = '';
 
-  /* ── 입금 토글 ── */
-  function togglePayment(name, checked) {
-    const payments = getPayments();
-    payments[name] = checked;
-    localStorage.setItem(PAYMENT_KEY, JSON.stringify(payments));
-    loadAdmin();
-  }
+  // 통계
+  html += `<div class="stat-strip">
+    <div class="stat-box"><div class="stat-num">${picks.length}</div><div class="stat-lbl">참가자</div></div>
+    <div class="stat-box"><div class="stat-num">${paidCount}/${picks.length}</div><div class="stat-lbl">입금 완료</div></div>
+    <div class="stat-box"><div class="stat-num">${totalPot.toLocaleString()}</div><div class="stat-lbl">총 상금 (원)</div></div>
+  </div>`;
 
-  /* ── 상금 계산 ── */
-  function calcPrize(picks, results, totalPot) {
-    const perGame = Math.floor(totalPot / 3);
-    let rollover = 0;
-    const matchResults = results.map((r, i) => {
-      const gamePot = perGame + rollover;
-      if (!r) return { gamePot, winners: null, status: 'pending' };
-      const [ra, rb] = r;
-      const winners = picks.filter(p => p.scores[i][0] === ra && p.scores[i][1] === rb).map(p => p.name);
-      if (winners.length > 0) {
-        rollover = 0;
-        return { gamePot, winners, status: 'win', payout: Math.floor(gamePot / winners.length) };
-      } else {
-        rollover = gamePot;
-        return { gamePot, winners: [], status: 'rollover' };
-      }
-    });
-    const allRollover = matchResults.every(m => m.status === 'rollover');
-    const finalBanner = allRollover && picks.length
-      ? { type: 'allSplit', amount: Math.floor(totalPot / picks.length) }
-      : null;
-    return { matchResults, finalBanner };
-  }
+  // Open/Close
+  html += `<div class="section-card"><div class="section-label">경기별 예측 접수 Open / Close</div>`;
+  MATCH_INFO.forEach((m, i) => {
+    const isOpen = matchOpen[i];
+    html += `<div class="match-control-row">
+      <div class="mc-info"><div class="mc-name">${m.label}</div><div class="mc-date">${m.date}</div></div>
+      <span class="mc-status ${isOpen ? 'open':'closed'}">${isOpen ? '🟢 OPEN':'🔴 CLOSED'}</span>
+      <div class="mc-toggle-wrap">
+        <span class="mc-toggle-label">${isOpen ? '접수중':'마감'}</span>
+        <label class="toggle-switch">
+          <input type="checkbox" ${isOpen ? 'checked':''} onchange="toggleMatch(${i}, this.checked)">
+          <div class="ts-track"></div><div class="ts-thumb"></div>
+        </label>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
 
-  /* ── 참가자 수정/삭제 ── */
-  let editingIdx = null;
+  // 계좌 설정
+  html += `<div class="section-card"><div class="section-label">입금 계좌 설정</div>
+    <div class="field-row"><label class="field-label">은행명</label><input type="text" class="field-input" id="cfg-bank" value="${account?.bank||''}" placeholder="예) 카카오뱅크"></div>
+    <div class="field-row"><label class="field-label">계좌번호</label><input type="text" class="field-input" id="cfg-account" value="${account?.account||''}" placeholder="예) 3333-12-3456789"></div>
+    <div class="field-row"><label class="field-label">예금주</label><input type="text" class="field-input" id="cfg-holder" value="${account?.holder||''}" placeholder="예) 홍길동"></div>
+    <div class="field-row"><label class="field-label">참가비 (원)</label><input type="number" class="field-input fee-input" id="cfg-fee" value="${account?.fee||5000}" min="0"></div>
+    <button class="save-account-btn" id="acc-save-btn" onclick="saveAccount()">계좌 정보 저장 → 참가자 페이지에 즉시 반영</button>
+  </div>`;
 
-  function renderParticipantManage() {
-    const picks   = getPicks();
-    const status  = getStatus();
-    const summary = document.getElementById('participant-manage-summary');
-    const list    = document.getElementById('participant-manage-list');
-
-    if (!picks.length) {
-      summary.textContent = '';
-      list.innerHTML = '<div class="empty">참가자가 없습니다</div>';
-      return;
-    }
-    summary.textContent = `총 ${picks.length}명 · 이름 및 스코어 수정, 취소자 삭제 가능`;
-
-    list.innerHTML = picks.map((p, idx) => {
-      const scoreStr = p.scores.map((s, i) => {
-        if (!s) return `<span style="color:var(--muted)">${MATCH_INFO[i].short} 미접수</span>`;
-        return `${MATCH_INFO[i].short} ${s[0]}:${s[1]}`;
-      }).join(' · ');
-
-      // 편집 폼 — open 경기만 스코어 수정 가능
+  // 참가자 관리
+  html += `<div class="section-card"><div class="section-label">참가자 관리 <span style="font-weight:400;color:var(--muted);font-size:0.75rem;text-transform:none;">총 ${picks.length}명</span></div>`;
+  if (!picks.length) {
+    html += `<div class="empty">참가자가 없습니다</div>`;
+  } else {
+    picks.forEach((p, idx) => {
+      const scoreStr = (p.scores||[]).map((s, i) => s ? `${MATCH_INFO[i].short} ${s[0]}:${s[1]}` : `${MATCH_INFO[i].short} 미접수`).join(' · ');
       const scoreEditors = MATCH_INFO.map((m, i) => {
-        const s = p.scores[i];
-        if (!s) {
-          return `<span class="edit-score-na">${m.short} 미접수</span>`;
-        }
+        const s = p.scores?.[i];
+        if (!s) return `<span style="font-size:0.72rem;color:var(--muted);font-style:italic;">${m.short} 미접수</span>`;
         return `<span class="edit-match-label">${m.short}</span>
-          <input type="number" class="edit-score-input" id="edit-${idx}-s${i}a" value="${s[0]}" min="0" max="20">
+          <input type="number" class="edit-score-input" id="e${idx}-s${i}a" value="${s[0]}" min="0" max="20">
           <span class="edit-score-sep">:</span>
-          <input type="number" class="edit-score-input" id="edit-${idx}-s${i}b" value="${s[1]}" min="0" max="20">`;
-      }).join('<span style="margin:0 4px;color:var(--border);">|</span>');
+          <input type="number" class="edit-score-input" id="e${idx}-s${i}b" value="${s[1]}" min="0" max="20">`;
+      }).join('<span style="margin:0 3px;color:var(--border)">|</span>');
 
-      return `<div class="participant-manage-row" id="pmr-${idx}">
+      html += `<div class="participant-manage-row">
         <div class="pmr-main">
           <div style="flex:1;">
-            <div class="pmr-name">${p.name}<span class="paid-chip" id="pmr-paid-${idx}" style="display:none;">입금완료</span></div>
+            <div class="pmr-name">${p.name}${payments[p.name] ? '<span class="paid-chip">입금완료</span>':''}</div>
             <div class="pmr-scores">${scoreStr}</div>
           </div>
           <div class="pmr-actions">
@@ -476,244 +377,228 @@
             <button class="btn-delete" onclick="deletePick(${idx})">🗑 삭제</button>
           </div>
         </div>
-        <div class="pmr-edit-form" id="edit-form-${idx}">
-          <div class="edit-row">
-            <span class="edit-label">이름</span>
-            <input type="text" class="edit-name-input" id="edit-${idx}-name" value="${p.name}" maxlength="10">
-          </div>
-          <div class="edit-row">
-            <span class="edit-label">스코어</span>
-            <div class="edit-score-group">${scoreEditors}</div>
-          </div>
+        <div class="pmr-edit-form" id="ef-${idx}">
+          <div class="edit-row"><span class="edit-label">이름</span><input type="text" class="edit-name-input" id="e${idx}-name" value="${p.name}" maxlength="10"></div>
+          <div class="edit-row"><span class="edit-label">스코어</span><div class="edit-score-group">${scoreEditors}</div></div>
           <div class="edit-btn-row">
-            <button class="btn-save-edit" onclick="saveEdit(${idx})">저장</button>
+            <button class="btn-save-edit" id="es-btn-${idx}" onclick="saveEdit(${idx})">저장</button>
             <button class="btn-cancel-edit" onclick="toggleEdit(${idx})">취소</button>
           </div>
         </div>
       </div>`;
-    }).join('');
-
-    // 입금 뱃지 반영
-    const payments = getPayments();
-    picks.forEach((p, idx) => {
-      const badge = document.getElementById(`pmr-paid-${idx}`);
-      if (badge) badge.style.display = payments[p.name] ? 'inline-block' : 'none';
     });
   }
+  html += `</div>`;
 
-  function toggleEdit(idx) {
-    const form = document.getElementById(`edit-form-${idx}`);
-    if (!form) return;
-    const isOpen = form.classList.contains('open');
-    // 다른 열린 편집 닫기
-    document.querySelectorAll('.pmr-edit-form.open').forEach(f => f.classList.remove('open'));
-    if (!isOpen) form.classList.add('open');
-  }
-
-  function saveEdit(idx) {
-    const picks = getPicks();
-    if (idx < 0 || idx >= picks.length) return;
-
-    const newName = document.getElementById(`edit-${idx}-name`).value.trim();
-    if (!newName) { showToast('⚠️ 이름을 입력해주세요'); return; }
-
-    // 중복 이름 체크 (자기 자신 제외)
-    if (picks.some((p, i) => i !== idx && p.name === newName)) {
-      showToast('⚠️ 이미 같은 이름의 참가자가 있습니다'); return;
-    }
-
-    const oldName = picks[idx].name;
-    const newScores = picks[idx].scores.map((s, i) => {
-      if (!s) return null; // 미접수는 유지
-      const a = document.getElementById(`edit-${idx}-s${i}a`);
-      const b = document.getElementById(`edit-${idx}-s${i}b`);
-      if (!a || !b) return s;
-      return [+a.value, +b.value];
+  // 입금 확인
+  html += `<div class="section-card"><div class="section-label">입금 확인 관리</div>
+    <div style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;">총 ${picks.length}명 · 입금완료 ${paidCount}명 · 미입금 ${picks.length - paidCount}명 · 총 상금 ${totalPot.toLocaleString()}원</div>`;
+  if (!picks.length) {
+    html += `<div class="empty">참가자가 없습니다</div>`;
+  } else {
+    picks.forEach(p => {
+      const paid = !!payments[p.name];
+      const scoreStr = (p.scores||[]).map((s, i) => s ? `${MATCH_INFO[i].short} ${s[0]}:${s[1]}` : `${MATCH_INFO[i].short} 미접수`).join(' · ');
+      html += `<div class="payment-row">
+        <div style="flex:1;">
+          <div class="payment-name">${p.name}${paid ? '<span class="paid-chip">입금완료</span>':''}</div>
+          <div class="payment-scores">${scoreStr}</div>
+        </div>
+        <label class="payment-toggle">
+          <input type="checkbox" ${paid ? 'checked':''} onchange="togglePayment('${p.name}', this.checked)">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>`;
     });
-
-    picks[idx] = { ...picks[idx], name: newName, scores: newScores };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(picks));
-
-    // 입금/결제 정보 이름 키 변경
-    if (oldName !== newName) {
-      const payments = getPayments();
-      if (payments[oldName] !== undefined) {
-        payments[newName] = payments[oldName];
-        delete payments[oldName];
-        localStorage.setItem(PAYMENT_KEY, JSON.stringify(payments));
-      }
-    }
-
-    showToast(`✅ ${newName}님 정보 수정 완료`);
-    loadAdmin();
   }
+  html += `</div>`;
 
-  function deletePick(idx) {
-    const picks = getPicks();
-    if (idx < 0 || idx >= picks.length) return;
-    const name = picks[idx].name;
-    if (!confirm(`"${name}"님을 취소 처리하고 삭제할까요?`)) return;
+  // 경기 결과
+  html += `<div class="section-card"><div class="section-label">실제 경기 결과 입력</div>`;
+  MATCH_INFO.forEach((m, i) => {
+    const r = results[i];
+    html += `<div class="match-result-row">
+      <div class="mr-info"><div class="mr-name">${m.label}</div><div class="mr-date">${m.date}</div></div>
+      <div class="score-box">
+        <input type="number" class="score-input" id="r${i}a" value="${r ? r[0]:''}" min="0" max="20" placeholder="–">
+        <span class="score-sep">:</span>
+        <input type="number" class="score-input" id="r${i}b" value="${r ? r[1]:''}" min="0" max="20" placeholder="–">
+      </div>
+    </div>`;
+  });
+  html += `<button class="save-btn" id="result-save-btn" onclick="saveResults()">결과 저장 &amp; 상금 계산</button></div>`;
 
-    // 입금 정보도 함께 삭제
-    const payments = getPayments();
-    delete payments[name];
-    localStorage.setItem(PAYMENT_KEY, JSON.stringify(payments));
-
-    picks.splice(idx, 1);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(picks));
-
-    showToast(`🗑 ${name}님 삭제 완료`);
-    loadAdmin();
-  }
-
-  /* ── 전체 렌더 ── */
-  function loadAdmin() {
-    const picks    = getPicks();
-    const results  = getResults();
-    const acc      = getAccount();
-    const payments = getPayments();
-    const fee      = acc.fee || 5000;
-    const totalPot = picks.length * fee;
-
-    document.getElementById('cfg-bank').value    = acc.bank    || '';
-    document.getElementById('cfg-account').value = acc.account || '';
-    document.getElementById('cfg-holder').value  = acc.holder  || '';
-    document.getElementById('cfg-fee').value     = acc.fee     || 5000;
-
-    const paidCount = picks.filter(p => payments[p.name]).length;
-    document.getElementById('stat-count').textContent = picks.length;
-    document.getElementById('stat-paid').textContent  = `${paidCount}/${picks.length}`;
-    document.getElementById('stat-prize').textContent = totalPot.toLocaleString();
-
-    results.forEach((r, i) => {
-      if (r) {
-        document.getElementById(`r${i+1}a`).value = r[0];
-        document.getElementById(`r${i+1}b`).value = r[1];
-      }
-    });
-
-    renderMatchControls();
-    renderParticipantManage();
-
-    // 입금 관리
-    const payList = document.getElementById('payment-list');
-    const paySummary = document.getElementById('payment-summary');
-    if (!picks.length) {
-      payList.innerHTML = '<div class="empty">참가자가 없습니다</div>';
-      paySummary.textContent = '';
-    } else {
-      paySummary.textContent = `총 ${picks.length}명 · 입금완료 ${paidCount}명 · 미입금 ${picks.length - paidCount}명 · 총 상금 ${totalPot.toLocaleString()}원`;
-      payList.innerHTML = picks.map(p => {
-        const paid = !!payments[p.name];
-        const scoreStr = p.scores.map((s, i) => `${MATCH_INFO[i].short} ${s[0]}:${s[1]}`).join(' · ');
-        return `<div class="payment-row">
-          <div style="flex:1;">
-            <div class="payment-name">${p.name}${paid ? '<span class="paid-chip">입금완료</span>' : ''}</div>
-            <div class="payment-scores">${scoreStr}</div>
-          </div>
-          <label class="payment-toggle">
-            <input type="checkbox" ${paid ? 'checked' : ''} onchange="togglePayment('${p.name}', this.checked)">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>`;
-      }).join('');
-    }
-
-    // 상금 현황
-    const bd = document.getElementById('prize-breakdown');
-    const fb = document.getElementById('final-banner');
-    if (!picks.length) { bd.innerHTML = '<div class="empty">참가자가 없습니다</div>'; fb.style.display = 'none'; return; }
-
+  // 상금 현황
+  html += `<div class="section-card"><div class="section-label"><span>경기별 상금 현황</span><button class="export-btn" onclick="copyResults()">📋 결과 복사</button></div>`;
+  if (!picks.length) {
+    html += `<div class="empty">참가자가 없습니다</div>`;
+  } else {
     const { matchResults, finalBanner } = calcPrize(picks, results, totalPot);
-    bd.innerHTML = matchResults.map((m, i) => {
+    matchResults.forEach((m, i) => {
       const r = results[i];
       const resultStr = r ? `실제 ${r[0]}:${r[1]}` : '결과 미입력';
-      let prizeLabel = '', prizeClass = '', winnerHtml = '';
+      let prizeLabel='', prizeClass='', winnerHtml='';
       if (m.status === 'pending') {
-        prizeLabel = `${m.gamePot.toLocaleString()}원 (대기중)`;
-        prizeClass = 'pending';
-        winnerHtml = `<span class="pending-chip">경기 대기중</span>`;
+        prizeLabel=`${m.gamePot.toLocaleString()}원 (대기중)`; prizeClass='pending';
+        winnerHtml=`<span class="pending-chip">경기 대기중</span>`;
       } else if (m.status === 'win') {
-        prizeLabel = `${m.gamePot.toLocaleString()}원 지급`;
-        prizeClass = 'win';
-        winnerHtml = m.winners.map(name =>
-          `<div class="winner-row"><span class="winner-name-tag">${name}</span><span class="exact-chip">🎯 정확 · ${m.payout.toLocaleString()}원</span></div>`
-        ).join('');
+        prizeLabel=`${m.gamePot.toLocaleString()}원 지급`; prizeClass='win';
+        winnerHtml=m.winners.map(n => `<div class="winner-row"><span class="winner-name-tag">${n}</span><span class="exact-chip">🎯 정확 · ${m.payout.toLocaleString()}원</span></div>`).join('');
       } else {
-        prizeLabel = `${m.gamePot.toLocaleString()}원 → 이월`;
-        prizeClass = 'roll';
-        winnerHtml = `<span class="rollover-chip">⏩ 아무도 못 맞춤 · 다음 경기로 이월</span>`;
+        prizeLabel=`${m.gamePot.toLocaleString()}원 → 이월`; prizeClass='roll';
+        winnerHtml=`<span class="rollover-chip">⏩ 아무도 못 맞춤 · 다음 경기로 이월</span>`;
       }
-      return `<div class="prize-match-block">
-        <div class="pmb-header">
-          <div><div class="pmb-title">${MATCH_INFO[i].label}</div><div class="pmb-title-sub">${resultStr}</div></div>
-          <div class="pmb-prize ${prizeClass}">${prizeLabel}</div>
-        </div>
+      html += `<div class="prize-match-block">
+        <div class="pmb-header"><div><div class="pmb-title">${MATCH_INFO[i].label}</div><div class="pmb-title-sub">${resultStr}</div></div><div class="pmb-prize ${prizeClass}">${prizeLabel}</div></div>
         <div class="pmb-winners">${winnerHtml}</div>
       </div>`;
-    }).join('');
+    });
 
     if (finalBanner?.type === 'allSplit') {
-      fb.style.display = 'block';
-      fb.className = 'final-banner all-split';
-      document.getElementById('final-trophy').textContent = '🤝';
-      document.getElementById('final-name').textContent = '3경기 모두 아무도 맞추지 못했습니다';
-      document.getElementById('final-sub').textContent = `전원 균등 배분 · 1인 ${finalBanner.amount.toLocaleString()}원 (총 ${totalPot.toLocaleString()}원)`;
+      html += `</div><div class="final-banner all-split" style="display:block;">
+        <div class="final-trophy">🤝</div>
+        <div class="final-name">3경기 모두 아무도 맞추지 못했습니다</div>
+        <div class="final-sub">전원 균등 배분 · 1인 ${finalBanner.amount.toLocaleString()}원 (총 ${totalPot.toLocaleString()}원)</div>
+      </div>`;
     } else {
-      fb.style.display = 'none';
+      html += `</div>`;
     }
   }
+  if (picks.length) {} else html += `</div>`;
 
-  function saveResults() {
-    const results = [1,2,3].map(i => {
-      const a = document.getElementById(`r${i}a`).value;
-      const b = document.getElementById(`r${i}b`).value;
-      return (a !== '' && b !== '') ? [+a, +b] : null;
-    });
-    localStorage.setItem(RESULT_KEY, JSON.stringify(results));
-    showToast('✅ 결과 저장 완료');
-    loadAdmin();
-  }
+  // 초기화
+  html += `<div style="text-align:center;margin-top:1.5rem;">
+    <button class="export-btn" style="color:#C8102E;border-color:#F5C0CC;" onclick="clearAll()">⚠️ 전체 데이터 초기화</button>
+  </div>`;
 
-  function copyResults() {
-    const picks    = getPicks();
-    const results  = getResults();
-    const acc      = getAccount();
-    const payments = getPayments();
-    const fee      = acc.fee || 5000;
-    const totalPot = picks.length * fee;
-    if (!picks.length) { showToast('참가자가 없습니다'); return; }
-    const { matchResults, finalBanner } = calcPrize(picks, results, totalPot);
-    const paidCount = picks.filter(p => payments[p.name]).length;
-    const lines = [
-      `[2026 월드컵 스코어 내기 결과]`,
-      `참가: ${picks.length}명 · 입금완료: ${paidCount}명 · 총 상금: ${totalPot.toLocaleString()}원`, '',
-      ...matchResults.map((m, i) => {
-        const r = results[i];
-        const rs = r ? `${r[0]}:${r[1]}` : '미정';
-        if (m.status === 'pending') return `${MATCH_INFO[i].label} — 결과 미입력`;
-        if (m.status === 'win')     return `${MATCH_INFO[i].label} (${rs}) — 🎯 ${m.winners.join(', ')} · ${m.gamePot.toLocaleString()}원 (1인 ${m.payout.toLocaleString()}원)`;
-        return `${MATCH_INFO[i].label} (${rs}) — ⏩ 아무도 못 맞춤 · ${m.gamePot.toLocaleString()}원 이월`;
-      }),
-    ];
-    if (finalBanner?.type === 'allSplit') lines.push('', `🤝 3경기 모두 미적중 → 전원 균등 배분 (1인 ${finalBanner.amount.toLocaleString()}원)`);
-    lines.push('', '— 예측 현황 —');
-    picks.forEach(p => {
-      const scoreStr = p.scores.map((s, i) => `${MATCH_INFO[i].short} ${s[0]}:${s[1]}`).join(' / ');
-      lines.push(`${p.name} ${payments[p.name] ? '[입금]' : '[미입금]'} — ${scoreStr}`);
-    });
-    navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('📋 복사 완료!'));
-  }
+  document.getElementById('admin-content').innerHTML = html;
+}
 
-  function clearAll() {
-    if (!confirm('모든 참가자 데이터, 결과, 입금 현황을 삭제할까요?\n계좌 설정과 경기 Open/Close 상태는 유지됩니다.')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(RESULT_KEY);
-    localStorage.removeItem(PAYMENT_KEY);
-    loadAdmin();
-    showToast('🗑️ 초기화 완료');
+/* ── 액션 함수들 ── */
+async function toggleMatch(idx, checked) {
+  const newState = { ...state, matchOpen: [...state.matchOpen] };
+  newState.matchOpen[idx] = checked;
+  await saveState(newState);
+  showToast(`${MATCH_INFO[idx].short} ${checked ? '🟢 OPEN':'🔴 CLOSED'}`);
+  renderAdmin();
+}
+
+async function saveAccount() {
+  const btn = document.getElementById('acc-save-btn');
+  btn.disabled = true; btn.textContent = '저장 중...';
+  const newState = {
+    ...state,
+    account: {
+      bank: document.getElementById('cfg-bank').value.trim(),
+      account: document.getElementById('cfg-account').value.trim(),
+      holder: document.getElementById('cfg-holder').value.trim(),
+      fee: parseInt(document.getElementById('cfg-fee').value) || 5000,
+    }
+  };
+  await saveState(newState);
+  showToast('✅ 계좌 정보 저장됨 · 참가자 페이지에 반영됩니다');
+  renderAdmin();
+}
+
+function toggleEdit(idx) {
+  const form = document.getElementById(`ef-${idx}`);
+  if (!form) return;
+  const isOpen = form.classList.contains('open');
+  document.querySelectorAll('.pmr-edit-form.open').forEach(f => f.classList.remove('open'));
+  if (!isOpen) form.classList.add('open');
+}
+
+async function saveEdit(idx) {
+  const btn = document.getElementById(`es-btn-${idx}`);
+  const newName = document.getElementById(`e${idx}-name`)?.value.trim();
+  if (!newName) { showToast('⚠️ 이름을 입력해주세요'); return; }
+  if (state.picks.some((p, i) => i !== idx && p.name === newName)) {
+    showToast('⚠️ 이미 같은 이름의 참가자가 있습니다'); return;
   }
+  const oldName = state.picks[idx].name;
+  const newScores = state.picks[idx].scores.map((s, i) => {
+    if (!s) return null;
+    const a = document.getElementById(`e${idx}-s${i}a`);
+    const b = document.getElementById(`e${idx}-s${i}b`);
+    return (a && b) ? [+a.value, +b.value] : s;
+  });
+
+  btn.disabled = true; btn.textContent = '저장 중...';
+  const newPicks = [...state.picks];
+  newPicks[idx] = { ...newPicks[idx], name: newName, scores: newScores };
+  const newPayments = { ...state.payments };
+  if (oldName !== newName && newPayments[oldName] !== undefined) {
+    newPayments[newName] = newPayments[oldName];
+    delete newPayments[oldName];
+  }
+  await saveState({ ...state, picks: newPicks, payments: newPayments });
+  showToast(`✅ ${newName}님 정보 수정 완료`);
+  renderAdmin();
+}
+
+async function deletePick(idx) {
+  const name = state.picks[idx]?.name;
+  if (!name || !confirm(`"${name}"님을 취소 처리하고 삭제할까요?`)) return;
+  const newPicks = state.picks.filter((_, i) => i !== idx);
+  const newPayments = { ...state.payments };
+  delete newPayments[name];
+  await saveState({ ...state, picks: newPicks, payments: newPayments });
+  showToast(`🗑 ${name}님 삭제 완료`);
+  renderAdmin();
+}
+
+async function togglePayment(name, checked) {
+  const newPayments = { ...state.payments, [name]: checked };
+  await saveState({ ...state, payments: newPayments });
+  renderAdmin();
+}
+
+async function saveResults() {
+  const btn = document.getElementById('result-save-btn');
+  btn.disabled = true; btn.textContent = '저장 중...';
+  const results = [0,1,2].map(i => {
+    const a = document.getElementById(`r${i}a`)?.value;
+    const b = document.getElementById(`r${i}b`)?.value;
+    return (a !== '' && b !== '' && a != null && b != null) ? [+a, +b] : null;
+  });
+  await saveState({ ...state, results });
+  showToast('✅ 결과 저장 완료');
+  renderAdmin();
+}
+
+function copyResults() {
+  const { picks, payments, results, account } = state;
+  const fee = account?.fee || 5000;
+  const totalPot = picks.length * fee;
+  if (!picks.length) { showToast('참가자가 없습니다'); return; }
+  const { matchResults, finalBanner } = calcPrize(picks, results, totalPot);
+  const paidCount = picks.filter(p => payments[p.name]).length;
+  const lines = [
+    `[2026 월드컵 스코어 내기 결과]`,
+    `참가: ${picks.length}명 · 입금완료: ${paidCount}명 · 총 상금: ${totalPot.toLocaleString()}원`, '',
+    ...matchResults.map((m, i) => {
+      const r = results[i];
+      const rs = r ? `${r[0]}:${r[1]}` : '미정';
+      if (m.status === 'pending') return `${MATCH_INFO[i].label} — 결과 미입력`;
+      if (m.status === 'win')     return `${MATCH_INFO[i].label} (${rs}) — 🎯 ${m.winners.join(', ')} · ${m.gamePot.toLocaleString()}원 (1인 ${m.payout.toLocaleString()}원)`;
+      return `${MATCH_INFO[i].label} (${rs}) — ⏩ 아무도 못 맞춤 · ${m.gamePot.toLocaleString()}원 이월`;
+    }),
+  ];
+  if (finalBanner?.type === 'allSplit') lines.push('', `🤝 전원 균등 배분 (1인 ${finalBanner.amount.toLocaleString()}원)`);
+  lines.push('', '— 예측 현황 —');
+  picks.forEach(p => {
+    const scoreStr = (p.scores||[]).map((s, i) => s ? `${MATCH_INFO[i].short} ${s[0]}:${s[1]}` : `${MATCH_INFO[i].short} 미접수`).join(' / ');
+    lines.push(`${p.name} ${payments[p.name] ? '[입금]':'[미입금]'} — ${scoreStr}`);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('📋 복사 완료!'));
+}
+
+async function clearAll() {
+  if (!confirm('모든 참가자 데이터, 결과, 입금 현황을 삭제할까요?\n계좌 설정과 Open/Close 상태는 유지됩니다.')) return;
+  await saveState({ ...state, picks: [], payments: {}, results: [null, null, null] });
+  showToast('🗑️ 초기화 완료');
+  renderAdmin();
+}
 </script>
 </body>
 </html>
