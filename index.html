@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 월드컵 스코어 내기 — 대한민국</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #C8102E;
+    --navy: #002868;
+    --bg: #F6F6F4;
+    --card: #FFFFFF;
+    --border: #E2E2DE;
+    --text: #1A1A1A;
+    --muted: #6B6B68;
+    --accent-bg: #FFF5F7;
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red) 50%, #FFD700 50%);
+  }
+  .hero-flags { font-size: 2rem; letter-spacing: 6px; margin-bottom: 1rem; }
+  .hero-title {
+    font-size: clamp(1.25rem, 5vw, 1.7rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+  }
+  .hero-sub { font-size: 0.85rem; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; }
+  .hero-badge {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--red);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 5px 16px;
+    border-radius: 20px;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 560px; margin: 0 auto; padding: 0 1rem; }
+
+  /* FEE BANNER */
+  .fee-banner {
+    background: var(--accent-bg);
+    border: 1.5px solid var(--red);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0 1rem;
+  }
+  .fee-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 2px; }
+  .fee-amount { font-size: 1.6rem; font-weight: 700; color: var(--red); }
+  .fee-note { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  /* RULES */
+  .rules-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.7rem;
+  }
+  .rules-list { list-style: none; }
+  .rules-list li {
+    font-size: 0.85rem;
+    color: var(--text);
+    padding: 5px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.55;
+    border-bottom: 1px solid var(--border);
+  }
+  .rules-list li:last-child { border-bottom: none; }
+  .rules-list li::before {
+    content: '';
+    width: 6px; height: 6px;
+    min-width: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    margin-top: 7px;
+  }
+  .rules-list strong { color: var(--navy); }
+
+  /* MATCH CARDS */
+  .match-section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .match-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .match-seq {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--red);
+    background: var(--accent-bg);
+    border: 1px solid #F5C0CC;
+    border-radius: 8px;
+    padding: 5px 9px;
+    white-space: nowrap;
+    text-align: center;
+    min-width: 42px;
+  }
+  .match-body { flex: 1; }
+  .match-opponent {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .match-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .score-box { display: flex; align-items: center; gap: 5px; }
+  .score-input {
+    width: 44px; height: 44px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    -moz-appearance: textfield;
+    transition: border-color 0.15s;
+  }
+  .score-input:focus { outline: none; border-color: var(--navy); background: #fff; }
+  .score-input::-webkit-outer-spin-button,
+  .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .score-sep { font-size: 1.1rem; font-weight: 700; color: var(--muted); }
+
+  /* NAME & SUBMIT */
+  .submit-section { margin-top: 1.5rem; }
+  .name-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .name-input {
+    flex: 1;
+    height: 48px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 0.9rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--card);
+    color: var(--text);
+    transition: border-color 0.15s;
+  }
+  .name-input:focus { outline: none; border-color: var(--navy); }
+  .submit-btn {
+    height: 48px;
+    padding: 0 22px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .submit-btn:hover { background: #001f52; }
+  .submit-btn:active { transform: scale(0.97); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* PARTICIPANTS */
+  .participants-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .participants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .prize-badge {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--red);
+    background: var(--accent-bg);
+    border: 1px solid #F5C0CC;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .participant-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    gap: 10px;
+  }
+  .participant-row:last-child { border-bottom: none; }
+  .p-name { font-weight: 700; color: var(--navy); min-width: 60px; }
+  .p-scores { color: var(--muted); text-align: right; line-height: 1.7; }
+
+  /* FOOTER */
+  .footer-link {
+    text-align: center;
+    margin-top: 2.5rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .footer-link a { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-flags">🇰🇷⚽🇨🇿🇲🇽🇿🇦</div>
+  <div class="hero-title">2026 북중미 FIFA 월드컵<br>스코어 맞추기 내기</div>
+  <div class="hero-sub">대한민국 A조 조별예선 · 3경기</div>
+  <div class="hero-badge">참가비 5,000원 · 전액 상금</div>
+</div>
+
+<div class="container">
+
+  <div class="fee-banner">
+    <div>
+      <div class="fee-label">1인 참가비</div>
+      <div class="fee-note">전액 최다 점수자에게 지급</div>
+    </div>
+    <div class="fee-amount">5,000원</div>
+  </div>
+
+  <div class="rules-card">
+    <div class="section-label">규칙 안내</div>
+    <ul class="rules-list">
+      <li>한국 조별예선 3경기의 <strong>정확한 스코어</strong>를 예측하세요.</li>
+      <li>스코어 완전 일치 <strong>3점</strong>, 승·무·패 결과만 맞추면 <strong>1점</strong>.</li>
+      <li>3경기 종료 후 <strong>최다 점수자</strong>가 전액 상금 수령.<br>동점 시 균등 배분.</li>
+      <li>각 경기 <strong>킥오프 전</strong>까지 예측 제출 가능.</li>
+    </ul>
+  </div>
+
+  <div class="match-section-label">경기 일정 &amp; 스코어 예측</div>
+
+  <div class="match-card">
+    <div class="match-seq">1차전</div>
+    <div class="match-body">
+      <div class="match-opponent">🇰🇷 대한민국 vs 체코 🇨🇿</div>
+      <div class="match-meta">
+        <span>📅 6월 12일 (금)</span>
+        <span>⏰ 오전 11:00</span>
+        <span>📍 과달라하라 아크론</span>
+      </div>
+    </div>
+    <div class="score-box">
+      <input type="number" class="score-input" id="s1a" min="0" max="20" placeholder="0">
+      <span class="score-sep">:</span>
+      <input type="number" class="score-input" id="s1b" min="0" max="20" placeholder="0">
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div class="match-seq">2차전</div>
+    <div class="match-body">
+      <div class="match-opponent">🇰🇷 대한민국 vs 멕시코 🇲🇽</div>
+      <div class="match-meta">
+        <span>📅 6월 19일 (금)</span>
+        <span>⏰ 오전 10:00</span>
+        <span>📍 과달라하라 아크론</span>
+      </div>
+    </div>
+    <div class="score-box">
+      <input type="number" class="score-input" id="s2a" min="0" max="20" placeholder="0">
+      <span class="score-sep">:</span>
+      <input type="number" class="score-input" id="s2b" min="0" max="20" placeholder="0">
+    </div>
+  </div>
+
+  <div class="match-card">
+    <div class="match-seq">3차전</div>
+    <div class="match-body">
+      <div class="match-opponent">🇰🇷 대한민국 vs 남아공 🇿🇦</div>
+      <div class="match-meta">
+        <span>📅 6월 25일 (목)</span>
+        <span>⏰ 오전 10:00</span>
+        <span>📍 몬테레이 BBVA</span>
+      </div>
+    </div>
+    <div class="score-box">
+      <input type="number" class="score-input" id="s3a" min="0" max="20" placeholder="0">
+      <span class="score-sep">:</span>
+      <input type="number" class="score-input" id="s3b" min="0" max="20" placeholder="0">
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <div class="name-row">
+      <input type="text" class="name-input" id="pname" placeholder="이름을 입력하세요" maxlength="10">
+      <button class="submit-btn" onclick="submitPick()">예측 제출 →</button>
+    </div>
+  </div>
+
+  <div class="participants-card" id="participants-card">
+    <div class="participants-header">
+      <div class="section-label" style="margin:0;" id="participants-label">참가자 현황</div>
+      <div class="prize-badge" id="prize-badge">상금 0원</div>
+    </div>
+    <div id="participants-list"></div>
+  </div>
+
+  <div class="footer-link">
+    <a href="admin.html">관리자 페이지</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'wc2026_picks';
+
+  function getPicks() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+  function savePicks(picks) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(picks));
+  }
+
+  function showToast(msg, duration = 2500) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), duration);
+  }
+
+  function submitPick() {
+    const name = document.getElementById('pname').value.trim();
+    if (!name) { showToast('⚠️ 이름을 입력해주세요'); return; }
+    const vals = ['s1a','s1b','s2a','s2b','s3a','s3b'].map(id => document.getElementById(id).value);
+    if (vals.some(v => v === '')) { showToast('⚠️ 3경기 스코어를 모두 입력해주세요'); return; }
+
+    const picks = getPicks();
+    if (picks.find(p => p.name === name)) { showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요'); return; }
+
+    picks.push({
+      name,
+      scores: [[+vals[0],+vals[1]],[+vals[2],+vals[3]],[+vals[4],+vals[5]]],
+      at: new Date().toISOString()
+    });
+    savePicks(picks);
+    document.getElementById('pname').value = '';
+    ['s1a','s1b','s2a','s2b','s3a','s3b'].forEach(id => document.getElementById(id).value = '');
+    showToast(`✅ ${name}님 예측 완료!`);
+    renderParticipants();
+  }
+
+  function renderParticipants() {
+    const picks = getPicks();
+    const card = document.getElementById('participants-card');
+    if (!picks.length) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+    document.getElementById('participants-label').textContent = `참가자 현황 (${picks.length}명)`;
+    document.getElementById('prize-badge').textContent = `상금 ${(picks.length * 5000).toLocaleString()}원`;
+    const matches = ['🇰🇷vs🇨🇿','🇰🇷vs🇲🇽','🇰🇷vs🇿🇦'];
+    document.getElementById('participants-list').innerHTML = picks.map(p => `
+      <div class="participant-row">
+        <span class="p-name">${p.name}</span>
+        <span class="p-scores">${p.scores.map((s,i) => `${matches[i]} <b>${s[0]}:${s[1]}</b>`).join('<br>')}</span>
+      </div>
+    `).join('');
+  }
+
+  renderParticipants();
+</script>
+</body>
+</html>

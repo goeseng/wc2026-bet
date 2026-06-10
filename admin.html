@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 — 2026 월드컵 스코어 내기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #C8102E;
+    --navy: #002868;
+    --bg: #F6F6F4;
+    --card: #FFFFFF;
+    --border: #E2E2DE;
+    --text: #1A1A1A;
+    --muted: #6B6B68;
+    --gold: #D4A017;
+    --gold-bg: #FFF9EC;
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  /* LOGIN */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .login-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .login-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .login-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .login-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .pw-input {
+    width: 100%;
+    height: 48px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 1rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-align: center;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+    transition: border-color 0.15s;
+  }
+  .pw-input:focus { outline: none; border-color: var(--navy); }
+  .login-btn {
+    width: 100%;
+    height: 48px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .login-btn:hover { background: #001f52; }
+  .login-error { font-size: 0.8rem; color: var(--red); margin-top: 8px; display: none; }
+
+  /* ADMIN */
+  .admin-wrap { display: none; }
+  .topbar {
+    background: var(--navy);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
+  .topbar-sub { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+  .logout-btn {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 0 1rem; }
+
+  /* SECTION */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* STAT STRIP */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 1.25rem;
+  }
+  .stat-box {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+  .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  /* RESULT INPUT */
+  .match-result-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .match-result-row:last-child { border-bottom: none; }
+  .mr-info { flex: 1; }
+  .mr-name { font-size: 0.88rem; font-weight: 700; }
+  .mr-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .score-box { display: flex; align-items: center; gap: 5px; }
+  .score-input {
+    width: 44px; height: 44px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    -moz-appearance: textfield;
+    transition: border-color 0.15s;
+  }
+  .score-input:focus { outline: none; border-color: var(--red); background: #fff; }
+  .score-input::-webkit-outer-spin-button,
+  .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .score-sep { font-size: 1rem; font-weight: 700; color: var(--muted); }
+  .confirmed-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #1a7a4a;
+    background: #E8F8EF;
+    border: 1px solid #A8DFC0;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .save-btn {
+    width: 100%;
+    height: 44px;
+    margin-top: 1rem;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .save-btn:hover { background: #a80c25; }
+  .save-btn:active { transform: scale(0.98); }
+
+  /* LEADERBOARD */
+  .lb-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-rank {
+    font-size: 0.88rem;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .lb-rank.first { color: #C8982A; font-size: 1.1rem; }
+  .lb-rank.second { color: #888; font-size: 1rem; }
+  .lb-rank.third { color: #A0633A; font-size: 1rem; }
+  .lb-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); }
+  .lb-scores { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.7; }
+  .lb-pts {
+    margin-left: auto;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    min-width: 40px;
+    text-align: right;
+  }
+  .lb-pts-unit { font-size: 0.7rem; font-weight: 400; color: var(--muted); }
+  .pt-chip {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 3px;
+    vertical-align: middle;
+  }
+  .pt-exact { background: #E6F0FF; color: #002868; }
+  .pt-result { background: #FFF0E6; color: #8B3A00; }
+  .pt-miss { background: var(--bg); color: var(--muted); }
+
+  /* EXPORT */
+  .export-btn {
+    height: 40px;
+    padding: 0 18px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .export-btn:hover { background: #EAEAE6; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* EMPTY */
+  .empty { text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.85rem; }
+
+  .winner-banner {
+    background: var(--gold-bg);
+    border: 1.5px solid #E6C87A;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.25rem;
+    text-align: center;
+    display: none;
+  }
+  .winner-banner .trophy { font-size: 2rem; }
+  .winner-banner .winner-name { font-size: 1.1rem; font-weight: 700; color: var(--gold); margin: 4px 0; }
+  .winner-banner .winner-sub { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">관리자 로그인</div>
+    <div class="login-sub">비밀번호를 입력해주세요</div>
+    <input type="password" class="pw-input" id="pw-input" placeholder="••••" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">로그인</button>
+    <div class="login-error" id="login-error">비밀번호가 올바르지 않습니다</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-wrap" id="admin-wrap">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">⚽ 2026 월드컵 내기 관리자</div>
+      <div class="topbar-sub">한국 A조 조별예선</div>
+    </div>
+    <button class="logout-btn" onclick="logout()">로그아웃</button>
+  </div>
+
+  <div class="container">
+
+    <!-- STATS -->
+    <div class="stat-strip">
+      <div class="stat-box">
+        <div class="stat-num" id="stat-count">0</div>
+        <div class="stat-lbl">참가자</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-prize">0</div>
+        <div class="stat-lbl">상금 (원)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-done">0/3</div>
+        <div class="stat-lbl">결과 입력</div>
+      </div>
+    </div>
+
+    <!-- ACTUAL RESULTS INPUT -->
+    <div class="section-card">
+      <div class="section-label">실제 경기 결과 입력</div>
+
+      <div class="match-result-row">
+        <div class="mr-info">
+          <div class="mr-name">🇰🇷 대한민국 vs 체코 🇨🇿</div>
+          <div class="mr-date">6월 12일(금) · 과달라하라</div>
+        </div>
+        <div class="score-box">
+          <input type="number" class="score-input" id="r1a" min="0" max="20" placeholder="–">
+          <span class="score-sep">:</span>
+          <input type="number" class="score-input" id="r1b" min="0" max="20" placeholder="–">
+        </div>
+      </div>
+
+      <div class="match-result-row">
+        <div class="mr-info">
+          <div class="mr-name">🇰🇷 대한민국 vs 멕시코 🇲🇽</div>
+          <div class="mr-date">6월 19일(금) · 과달라하라</div>
+        </div>
+        <div class="score-box">
+          <input type="number" class="score-input" id="r2a" min="0" max="20" placeholder="–">
+          <span class="score-sep">:</span>
+          <input type="number" class="score-input" id="r2b" min="0" max="20" placeholder="–">
+        </div>
+      </div>
+
+      <div class="match-result-row">
+        <div class="mr-info">
+          <div class="mr-name">🇰🇷 대한민국 vs 남아공 🇿🇦</div>
+          <div class="mr-date">6월 25일(목) · 몬테레이</div>
+        </div>
+        <div class="score-box">
+          <input type="number" class="score-input" id="r3a" min="0" max="20" placeholder="–">
+          <span class="score-sep">:</span>
+          <input type="number" class="score-input" id="r3b" min="0" max="20" placeholder="–">
+        </div>
+      </div>
+
+      <button class="save-btn" onclick="saveResults()">결과 저장 &amp; 점수 계산</button>
+    </div>
+
+    <!-- WINNER BANNER -->
+    <div class="winner-banner" id="winner-banner">
+      <div class="trophy">🏆</div>
+      <div class="winner-name" id="winner-name">—</div>
+      <div class="winner-sub" id="winner-sub"></div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="section-card">
+      <div class="section-label">
+        <span>참가자 순위</span>
+        <button class="export-btn" onclick="copyResults()">📋 결과 복사</button>
+      </div>
+      <div id="leaderboard"><div class="empty">아직 참가자가 없습니다</div></div>
+    </div>
+
+    <!-- DELETE ALL -->
+    <div style="text-align:center; margin-top:1.5rem;">
+      <button class="export-btn" style="color:#C8102E; border-color:#F5C0CC;" onclick="clearAll()">⚠️ 전체 데이터 초기화</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'wc2026_picks';
+  const RESULT_KEY  = 'wc2026_results';
+  const ADMIN_PW    = 'goal2026';   // ← 비밀번호 여기서 변경
+
+  const matches = [
+    { label: '🇰🇷vs🇨🇿 체코전', date: '6/12' },
+    { label: '🇰🇷vs🇲🇽 멕시코전', date: '6/19' },
+    { label: '🇰🇷vs🇿🇦 남아공전', date: '6/25' },
+  ];
+
+  function getPicks() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+  }
+  function getResults() {
+    try { return JSON.parse(localStorage.getItem(RESULT_KEY)) || [null, null, null]; } catch { return [null, null, null]; }
+  }
+  function showToast(msg, dur = 2500) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), dur);
+  }
+
+  function login() {
+    const val = document.getElementById('pw-input').value;
+    if (val === ADMIN_PW) {
+      document.getElementById('login-wrap').style.display = 'none';
+      document.getElementById('admin-wrap').style.display = 'block';
+      loadAdmin();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('pw-input').value = '';
+    }
+  }
+  function logout() {
+    document.getElementById('login-wrap').style.display = 'flex';
+    document.getElementById('admin-wrap').style.display = 'none';
+    document.getElementById('pw-input').value = '';
+  }
+
+  function scoreResult(actual, predicted) {
+    if (!actual) return { pts: 0, type: 'pending' };
+    const [ra, rb] = actual;
+    const [pa, pb] = predicted;
+    if (ra === pa && rb === pb) return { pts: 3, type: 'exact' };
+    const actualWinner  = ra > rb ? 1 : ra < rb ? -1 : 0;
+    const predictedWinner = pa > pb ? 1 : pa < pb ? -1 : 0;
+    if (actualWinner === predictedWinner) return { pts: 1, type: 'result' };
+    return { pts: 0, type: 'miss' };
+  }
+
+  function loadAdmin() {
+    const picks   = getPicks();
+    const results = getResults();
+
+    // Stats
+    document.getElementById('stat-count').textContent = picks.length;
+    document.getElementById('stat-prize').textContent = (picks.length * 5000).toLocaleString();
+    const done = results.filter(r => r !== null).length;
+    document.getElementById('stat-done').textContent = `${done}/3`;
+
+    // Load saved results into inputs
+    results.forEach((r, i) => {
+      if (r) {
+        document.getElementById(`r${i+1}a`).value = r[0];
+        document.getElementById(`r${i+1}b`).value = r[1];
+      }
+    });
+
+    // Leaderboard
+    const lb = document.getElementById('leaderboard');
+    if (!picks.length) { lb.innerHTML = '<div class="empty">아직 참가자가 없습니다</div>'; updateWinner([], results); return; }
+
+    const scored = picks.map(p => {
+      const matchScores = p.scores.map((s, i) => scoreResult(results[i], s));
+      const total = matchScores.reduce((a, b) => a + b.pts, 0);
+      return { ...p, matchScores, total };
+    }).sort((a, b) => b.total - a.total);
+
+    const chipLabels = { exact: '정확', result: '결과', miss: '오답', pending: '대기' };
+    const chipClass  = { exact: 'pt-exact', result: 'pt-result', miss: 'pt-miss', pending: 'pt-miss' };
+    const rankEmoji  = ['🥇','🥈','🥉'];
+
+    lb.innerHTML = scored.map((p, idx) => {
+      const rankClass = idx === 0 ? 'first' : idx === 1 ? 'second' : idx === 2 ? 'third' : '';
+      const rankDisp  = idx < 3 ? rankEmoji[idx] : `${idx+1}`;
+      const scoreDetail = p.matchScores.map((ms, i) =>
+        `${matches[i].label} <b>${p.scores[i][0]}:${p.scores[i][1]}</b> <span class="pt-chip ${chipClass[ms.type]}">${chipLabels[ms.type]} +${ms.pts}</span>`
+      ).join('<br>');
+      return `
+        <div class="lb-row">
+          <div class="lb-rank ${rankClass}">${rankDisp}</div>
+          <div style="flex:1;">
+            <div class="lb-name">${p.name}</div>
+            <div class="lb-scores">${scoreDetail}</div>
+          </div>
+          <div class="lb-pts">${p.total}<span class="lb-pts-unit">점</span></div>
+        </div>
+      `;
+    }).join('');
+
+    updateWinner(scored, results);
+  }
+
+  function updateWinner(scored, results) {
+    const banner = document.getElementById('winner-banner');
+    const allDone = results.every(r => r !== null);
+    if (!allDone || !scored.length) { banner.style.display = 'none'; return; }
+    const top = scored.filter(p => p.total === scored[0].total);
+    banner.style.display = 'block';
+    const prize = (getPicks().length * 5000).toLocaleString();
+    if (top.length === 1) {
+      document.getElementById('winner-name').textContent = `🏆 ${top[0].name} (${top[0].total}점)`;
+      document.getElementById('winner-sub').textContent = `상금 ${prize}원 수령!`;
+    } else {
+      document.getElementById('winner-name').textContent = top.map(p => p.name).join(', ');
+      document.getElementById('winner-sub').textContent = `공동 ${top[0].total}점 · ${prize}원 균등 배분 (1인 ${(getPicks().length * 5000 / top.length).toLocaleString()}원)`;
+    }
+  }
+
+  function saveResults() {
+    const results = [1,2,3].map(i => {
+      const a = document.getElementById(`r${i}a`).value;
+      const b = document.getElementById(`r${i}b`).value;
+      return (a !== '' && b !== '') ? [+a, +b] : null;
+    });
+    localStorage.setItem(RESULT_KEY, JSON.stringify(results));
+    showToast('✅ 결과 저장 완료');
+    loadAdmin();
+  }
+
+  function copyResults() {
+    const picks   = getPicks();
+    const results = getResults();
+    if (!picks.length) { showToast('참가자가 없습니다'); return; }
+
+    const scored = picks.map(p => {
+      const matchScores = p.scores.map((s, i) => scoreResult(results[i], s));
+      const total = matchScores.reduce((a, b) => a + b.pts, 0);
+      return { ...p, matchScores, total };
+    }).sort((a, b) => b.total - a.total);
+
+    const resultLine = results.map((r, i) =>
+      `${matches[i].label}: ${r ? `${r[0]}:${r[1]}` : '미정'}`
+    ).join(' / ');
+
+    const lines = [
+      `[2026 월드컵 스코어 내기 결과]`,
+      `참가: ${picks.length}명 · 상금: ${(picks.length * 5000).toLocaleString()}원`,
+      `실제 결과: ${resultLine}`,
+      '',
+      ...scored.map((p, i) => {
+        const detail = p.scores.map((s,j) => `${matches[j].label} ${s[0]}:${s[1]}`).join(' / ');
+        return `${i+1}위 ${p.name} (${p.total}점) — ${detail}`;
+      })
+    ].join('\n');
+
+    navigator.clipboard.writeText(lines).then(() => showToast('📋 복사 완료!'));
+  }
+
+  function clearAll() {
+    if (!confirm('모든 참가자 데이터와 결과를 삭제할까요?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(RESULT_KEY);
+    loadAdmin();
+    showToast('🗑️ 초기화 완료');
+  }
+</script>
+</body>
+</html>
