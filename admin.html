@@ -150,10 +150,8 @@
   <div class="login-card">
     <div class="login-icon">🔐</div>
     <div class="login-title">관리자 로그인</div>
-    <div class="login-sub">관리자 비밀번호</div>
-    <input type="password" class="pw-input" id="pw-input" placeholder="비밀번호" style="letter-spacing:2px;" onkeydown="if(event.key==='Enter')document.getElementById('token-input').focus()">
-    <div class="login-sub" style="margin-bottom:6px;">GitHub Token <span style="font-size:0.68rem;color:var(--muted);font-weight:400;">(파일에 저장되지 않아요)</span></div>
-    <input type="password" class="pw-input" id="token-input" placeholder="ghp_..." style="letter-spacing:1px;font-size:0.85rem;" onkeydown="if(event.key==='Enter')login()">
+    <div class="login-sub">비밀번호를 입력해주세요</div>
+    <input type="password" class="pw-input" id="pw-input" placeholder="••••" onkeydown="if(event.key==='Enter')login()">
     <button class="login-btn" onclick="login()">로그인</button>
     <div class="login-error" id="login-error">비밀번호 또는 토큰이 올바르지 않습니다</div>
   </div>
@@ -182,11 +180,11 @@
 
 <script>
 // ★ 여기를 본인 정보로 변경하세요 ★
-const GH_OWNER = 'YOUR_GITHUB_USERNAME';   // GitHub 계정명
+const GH_OWNER = 'goeseng';
 const GH_REPO  = 'wc2026-bet';             // 저장소 이름
 const GH_FILE  = 'data.json';              // 데이터 파일명
 const ADMIN_PW = 'goal2026';               // 관리자 비밀번호
-let GH_TOKEN = '';                         // 로그인 시 입력받음 (파일에 저장 안 함)
+const GH_TOKEN = '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';
 
 const MATCH_INFO = [
   { label:'1차전 🇰🇷 vs 체코 🇨🇿',   short:'체코전',   date:'6월 12일(금) · 과달라하라' },
@@ -256,24 +254,19 @@ async function ghSave(newState) {
 /* ── 로그인 ── */
 function login() {
   const pw = document.getElementById('pw-input').value;
-  const tok = document.getElementById('token-input').value.trim();
-  if (pw === ADMIN_PW && tok.startsWith('ghp_')) {
-    GH_TOKEN = tok;
+  if (pw === ADMIN_PW) {
     document.getElementById('login-wrap').style.display = 'none';
     document.getElementById('admin-wrap').style.display = 'block';
     reload();
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pw-input').value = '';
-    document.getElementById('token-input').value = '';
   }
 }
 function logout() {
-  GH_TOKEN = '';
   document.getElementById('login-wrap').style.display = 'flex';
   document.getElementById('admin-wrap').style.display = 'none';
   document.getElementById('pw-input').value = '';
-  document.getElementById('token-input').value = '';
 }
 async function reload() {
   document.getElementById('admin-body').innerHTML = '<div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>';
