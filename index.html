@@ -9,277 +9,108 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --red: #C8102E;
-    --navy: #002868;
-    --bg: #F6F6F4;
-    --card: #FFFFFF;
-    --border: #E2E2DE;
-    --text: #1A1A1A;
-    --muted: #6B6B68;
-    --accent-bg: #FFF5F7;
+    --red: #C8102E; --navy: #002868; --bg: #F6F6F4; --card: #FFFFFF;
+    --border: #E2E2DE; --text: #1A1A1A; --muted: #6B6B68; --accent-bg: #FFF5F7;
+    --green: #1a7a4a; --green-bg: #E8F8EF; --green-border: #A8DFC0;
   }
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: 4rem;
-  }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 4rem; }
 
-  /* HERO */
-  .hero {
-    background: var(--navy);
-    padding: 2.5rem 1.5rem 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--red) 50%, #FFD700 50%);
-  }
+  .hero { background: var(--navy); padding: 2.5rem 1.5rem 2rem; text-align: center; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red) 50%, #FFD700 50%); }
   .hero-flags { font-size: 2rem; letter-spacing: 6px; margin-bottom: 1rem; }
-  .hero-title {
-    font-size: clamp(1.25rem, 5vw, 1.7rem);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.3;
-    margin-bottom: 0.4rem;
-  }
+  .hero-title { font-size: clamp(1.25rem, 5vw, 1.7rem); font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 0.4rem; }
   .hero-sub { font-size: 0.85rem; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; }
-  .hero-badge {
-    display: inline-block;
-    margin-top: 1rem;
-    background: var(--red);
-    color: #fff;
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 5px 16px;
-    border-radius: 20px;
-  }
+  .hero-badge { display: inline-block; margin-top: 1rem; background: var(--red); color: #fff; font-size: 0.78rem; font-weight: 500; padding: 5px 16px; border-radius: 20px; }
 
-  /* LAYOUT */
   .container { max-width: 560px; margin: 0 auto; padding: 0 1rem; }
 
-  /* FEE BANNER */
+  /* 계좌 + 입금 현황 */
+  .account-card {
+    background: var(--card); border: 1.5px solid var(--navy);
+    border-radius: 14px; padding: 1.1rem 1.25rem; margin: 1.5rem 0 0;
+  }
+  .account-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; }
+  .account-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+  .total-badge { font-size: 0.78rem; font-weight: 700; color: var(--navy); background: #EDF1FF; border: 1px solid #B8C8F0; padding: 3px 12px; border-radius: 20px; }
+  .account-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .account-row:last-child { border-bottom: none; }
+  .acc-label { font-size: 0.8rem; color: var(--muted); }
+  .acc-value { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+  .acc-bank { font-size: 0.75rem; color: var(--muted); font-weight: 400; margin-left: 5px; }
+  .copy-account-btn {
+    font-size: 0.72rem; color: var(--navy); background: #EDF1FF; border: 1px solid #B8C8F0;
+    border-radius: 8px; padding: 3px 10px; cursor: pointer; margin-left: 8px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  /* 입금 현황 표 */
+  .payment-grid { margin-top: 0.9rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
+  .payment-chip {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.78rem; padding: 5px 10px; border-radius: 8px; font-weight: 500;
+  }
+  .payment-chip.paid { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .payment-chip.unpaid { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+  .payment-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .paid .payment-dot { background: var(--green); }
+  .unpaid .payment-dot { background: #ccc; }
+  .payment-empty { font-size: 0.8rem; color: var(--muted); text-align: center; padding: 0.6rem 0; }
+
+  /* 참가비 배너 */
   .fee-banner {
-    background: var(--accent-bg);
-    border: 1.5px solid var(--red);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 1.5rem 0 1rem;
+    background: var(--accent-bg); border: 1.5px solid var(--red);
+    border-radius: 14px; padding: 1rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;
   }
   .fee-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 2px; }
   .fee-amount { font-size: 1.6rem; font-weight: 700; color: var(--red); }
   .fee-note { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
-  /* RULES */
-  .rules-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.1rem 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-  .section-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 0.7rem;
-  }
+  /* 규칙 */
+  .rules-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1.25rem; margin-bottom: 1.5rem; }
+  .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.7rem; }
   .rules-list { list-style: none; }
-  .rules-list li {
-    font-size: 0.85rem;
-    color: var(--text);
-    padding: 5px 0;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    line-height: 1.55;
-    border-bottom: 1px solid var(--border);
-  }
+  .rules-list li { font-size: 0.85rem; color: var(--text); padding: 5px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.55; border-bottom: 1px solid var(--border); }
   .rules-list li:last-child { border-bottom: none; }
-  .rules-list li::before {
-    content: '';
-    width: 6px; height: 6px;
-    min-width: 6px;
-    background: var(--red);
-    border-radius: 50%;
-    margin-top: 7px;
-  }
+  .rules-list li::before { content: ''; width: 6px; height: 6px; min-width: 6px; background: var(--red); border-radius: 50%; margin-top: 7px; }
   .rules-list strong { color: var(--navy); }
 
-  /* MATCH CARDS */
-  .match-section-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-  .match-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .match-seq {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--red);
-    background: var(--accent-bg);
-    border: 1px solid #F5C0CC;
-    border-radius: 8px;
-    padding: 5px 9px;
-    white-space: nowrap;
-    text-align: center;
-    min-width: 42px;
-  }
+  /* 경기 카드 */
+  .match-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .match-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+  .match-seq { font-size: 0.7rem; font-weight: 700; color: var(--red); background: var(--accent-bg); border: 1px solid #F5C0CC; border-radius: 8px; padding: 5px 9px; white-space: nowrap; text-align: center; min-width: 42px; }
   .match-body { flex: 1; }
-  .match-opponent {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .match-meta {
-    font-size: 0.75rem;
-    color: var(--muted);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .match-opponent { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .match-meta { font-size: 0.75rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; }
   .score-box { display: flex; align-items: center; gap: 5px; }
-  .score-input {
-    width: 44px; height: 44px;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    background: var(--bg);
-    color: var(--text);
-    -moz-appearance: textfield;
-    transition: border-color 0.15s;
-  }
+  .score-input { width: 44px; height: 44px; text-align: center; font-size: 1.2rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text); -moz-appearance: textfield; transition: border-color 0.15s; }
   .score-input:focus { outline: none; border-color: var(--navy); background: #fff; }
-  .score-input::-webkit-outer-spin-button,
-  .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .score-input::-webkit-outer-spin-button, .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .score-sep { font-size: 1.1rem; font-weight: 700; color: var(--muted); }
 
-  /* NAME & SUBMIT */
+  /* 이름 + 제출 */
   .submit-section { margin-top: 1.5rem; }
   .name-row { display: flex; gap: 8px; margin-bottom: 10px; }
-  .name-input {
-    flex: 1;
-    height: 48px;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 0 14px;
-    font-size: 0.9rem;
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--card);
-    color: var(--text);
-    transition: border-color 0.15s;
-  }
+  .name-input { flex: 1; height: 48px; border: 1.5px solid var(--border); border-radius: 12px; padding: 0 14px; font-size: 0.9rem; font-family: 'Noto Sans KR', sans-serif; background: var(--card); color: var(--text); transition: border-color 0.15s; }
   .name-input:focus { outline: none; border-color: var(--navy); }
-  .submit-btn {
-    height: 48px;
-    padding: 0 22px;
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-    white-space: nowrap;
-  }
+  .submit-btn { height: 48px; padding: 0 22px; background: var(--navy); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background 0.15s, transform 0.1s; white-space: nowrap; }
   .submit-btn:hover { background: #001f52; }
   .submit-btn:active { transform: scale(0.97); }
 
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--navy);
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 10px 22px;
-    border-radius: 30px;
-    opacity: 0;
-    transition: opacity 0.25s, transform 0.25s;
-    z-index: 999;
-    white-space: nowrap;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* PARTICIPANTS */
-  .participants-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    margin-top: 1.5rem;
-    display: none;
-  }
-  .participants-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .prize-badge {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--red);
-    background: var(--accent-bg);
-    border: 1px solid #F5C0CC;
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-  .participant-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.82rem;
-    gap: 10px;
-  }
+  /* 참가자 현황 */
+  .participants-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; margin-top: 1.5rem; display: none; }
+  .participants-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .prize-badge { font-size: 0.78rem; font-weight: 700; color: var(--red); background: var(--accent-bg); border: 1px solid #F5C0CC; padding: 4px 12px; border-radius: 20px; }
+  .participant-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; gap: 10px; }
   .participant-row:last-child { border-bottom: none; }
-  .p-name { font-weight: 700; color: var(--navy); min-width: 60px; }
+  .p-name { font-weight: 700; color: var(--navy); min-width: 60px; display: flex; align-items: center; gap: 5px; }
+  .paid-mark { font-size: 0.65rem; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 10px; padding: 1px 6px; font-weight: 700; }
   .p-scores { color: var(--muted); text-align: right; line-height: 1.7; }
 
-  /* FOOTER */
-  .footer-link {
-    text-align: center;
-    margin-top: 2.5rem;
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; font-size: 0.85rem; font-weight: 500; padding: 10px 22px; border-radius: 30px; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 999; white-space: nowrap; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .footer-link { text-align: center; margin-top: 2.5rem; font-size: 0.75rem; color: var(--muted); }
   .footer-link a { color: var(--muted); }
 </style>
 </head>
@@ -289,17 +120,50 @@
   <div class="hero-flags">🇰🇷⚽🇨🇿🇲🇽🇿🇦</div>
   <div class="hero-title">2026 북중미 FIFA 월드컵<br>스코어 맞추기 내기</div>
   <div class="hero-sub">대한민국 A조 조별예선 · 3경기</div>
-  <div class="hero-badge">참가비 5,000원 · 전액 상금</div>
+  <div class="hero-badge" id="hero-badge">참가비 5,000원 · 전액 상금</div>
 </div>
 
 <div class="container">
+
+  <!-- 계좌 안내 + 입금 현황 -->
+  <div class="account-card" id="account-card" style="display:none;">
+    <div class="account-header">
+      <div class="account-title">입금 안내</div>
+      <div class="total-badge" id="total-badge">0명 · 0원</div>
+    </div>
+    <div class="account-row">
+      <span class="acc-label">은행</span>
+      <span class="acc-value" id="disp-bank">—</span>
+    </div>
+    <div class="account-row">
+      <span class="acc-label">계좌번호</span>
+      <span class="acc-value">
+        <span id="disp-account">—</span>
+        <button class="copy-account-btn" onclick="copyAccount()">복사</button>
+      </span>
+    </div>
+    <div class="account-row" style="border-bottom:none; padding-bottom:0;">
+      <span class="acc-label">예금주</span>
+      <span class="acc-value" id="disp-holder">—</span>
+    </div>
+
+    <!-- 입금 현황 -->
+    <div style="margin-top:1rem; padding-top:0.9rem; border-top:1px solid var(--border);">
+      <div style="font-size:0.72rem; font-weight:700; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">
+        입금 현황 <span id="paid-count" style="color:var(--green);"></span>
+      </div>
+      <div class="payment-grid" id="payment-grid">
+        <div class="payment-empty">아직 참가자가 없습니다</div>
+      </div>
+    </div>
+  </div>
 
   <div class="fee-banner">
     <div>
       <div class="fee-label">1인 참가비</div>
       <div class="fee-note">전액 최다 점수자에게 지급</div>
     </div>
-    <div class="fee-amount">5,000원</div>
+    <div class="fee-amount" id="fee-display">5,000원</div>
   </div>
 
   <div class="rules-card">
@@ -307,7 +171,7 @@
     <ul class="rules-list">
       <li>한국 조별예선 3경기의 <strong>정확한 스코어</strong>를 예측하세요.</li>
       <li>스코어 완전 일치 <strong>3점</strong>, 승·무·패 결과만 맞추면 <strong>1점</strong>.</li>
-      <li>3경기 종료 후 <strong>최다 점수자</strong>가 전액 상금 수령.<br>동점 시 균등 배분.</li>
+      <li>3경기 종료 후 <strong>최다 점수자</strong>가 전액 상금 수령. 동점 시 균등 배분.</li>
       <li>각 경기 <strong>킥오프 전</strong>까지 예측 제출 가능.</li>
     </ul>
   </div>
@@ -318,11 +182,7 @@
     <div class="match-seq">1차전</div>
     <div class="match-body">
       <div class="match-opponent">🇰🇷 대한민국 vs 체코 🇨🇿</div>
-      <div class="match-meta">
-        <span>📅 6월 12일 (금)</span>
-        <span>⏰ 오전 11:00</span>
-        <span>📍 과달라하라 아크론</span>
-      </div>
+      <div class="match-meta"><span>📅 6월 12일 (금)</span><span>⏰ 오전 11:00</span><span>📍 과달라하라 아크론</span></div>
     </div>
     <div class="score-box">
       <input type="number" class="score-input" id="s1a" min="0" max="20" placeholder="0">
@@ -335,11 +195,7 @@
     <div class="match-seq">2차전</div>
     <div class="match-body">
       <div class="match-opponent">🇰🇷 대한민국 vs 멕시코 🇲🇽</div>
-      <div class="match-meta">
-        <span>📅 6월 19일 (금)</span>
-        <span>⏰ 오전 10:00</span>
-        <span>📍 과달라하라 아크론</span>
-      </div>
+      <div class="match-meta"><span>📅 6월 19일 (금)</span><span>⏰ 오전 10:00</span><span>📍 과달라하라 아크론</span></div>
     </div>
     <div class="score-box">
       <input type="number" class="score-input" id="s2a" min="0" max="20" placeholder="0">
@@ -352,11 +208,7 @@
     <div class="match-seq">3차전</div>
     <div class="match-body">
       <div class="match-opponent">🇰🇷 대한민국 vs 남아공 🇿🇦</div>
-      <div class="match-meta">
-        <span>📅 6월 25일 (목)</span>
-        <span>⏰ 오전 10:00</span>
-        <span>📍 몬테레이 BBVA</span>
-      </div>
+      <div class="match-meta"><span>📅 6월 25일 (목)</span><span>⏰ 오전 10:00</span><span>📍 몬테레이 BBVA</span></div>
     </div>
     <div class="score-box">
       <input type="number" class="score-input" id="s3a" min="0" max="20" placeholder="0">
@@ -380,30 +232,67 @@
     <div id="participants-list"></div>
   </div>
 
-  <div class="footer-link">
-    <a href="admin.html">관리자 페이지</a>
-  </div>
-
+  <div class="footer-link"><a href="admin.html">관리자 페이지</a></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
   const STORAGE_KEY = 'wc2026_picks';
+  const ACCOUNT_KEY = 'wc2026_account';
+  const PAYMENT_KEY = 'wc2026_payments';
 
-  function getPicks() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { return []; }
-  }
-  function savePicks(picks) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(picks));
-  }
+  function getPicks()   { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
+  function getAccount() { try { return JSON.parse(localStorage.getItem(ACCOUNT_KEY)) || null; } catch { return null; } }
+  function getPayments(){ try { return JSON.parse(localStorage.getItem(PAYMENT_KEY)) || {}; } catch { return {}; } }
 
-  function showToast(msg, duration = 2500) {
+  function savePicks(p) { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }
+
+  function showToast(msg, dur = 2500) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), duration);
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), dur);
+  }
+
+  function copyAccount() {
+    const acc = getAccount();
+    if (!acc || !acc.account) return;
+    navigator.clipboard.writeText(acc.account).then(() => showToast('✅ 계좌번호 복사됨'));
+  }
+
+  function renderAccountSection() {
+    const acc = getAccount();
+    const picks = getPicks();
+    const payments = getPayments();
+
+    if (!acc || (!acc.bank && !acc.account && !acc.holder)) {
+      document.getElementById('account-card').style.display = 'none';
+      return;
+    }
+    document.getElementById('account-card').style.display = 'block';
+
+    const fee = acc.fee || 5000;
+    document.getElementById('fee-display').textContent = fee.toLocaleString() + '원';
+    document.getElementById('hero-badge').textContent = `참가비 ${fee.toLocaleString()}원 · 전액 상금`;
+    document.getElementById('disp-bank').textContent = acc.bank || '—';
+    document.getElementById('disp-account').textContent = acc.account || '—';
+    document.getElementById('disp-holder').textContent = acc.holder || '—';
+
+    const paidCount = Object.values(payments).filter(Boolean).length;
+    const totalPrize = picks.length * fee;
+    document.getElementById('total-badge').textContent = `${picks.length}명 · ${totalPrize.toLocaleString()}원`;
+    document.getElementById('paid-count').textContent = picks.length ? `(${paidCount}/${picks.length}명 완료)` : '';
+
+    const grid = document.getElementById('payment-grid');
+    if (!picks.length) {
+      grid.innerHTML = '<div class="payment-empty">아직 참가자가 없습니다</div>'; return;
+    }
+    grid.innerHTML = picks.map(p => {
+      const paid = payments[p.name];
+      return `<div class="payment-chip ${paid ? 'paid' : 'unpaid'}">
+        <div class="payment-dot"></div>${p.name}${paid ? ' ✓' : ''}
+      </div>`;
+    }).join('');
   }
 
   function submitPick() {
@@ -415,35 +304,36 @@
     const picks = getPicks();
     if (picks.find(p => p.name === name)) { showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요'); return; }
 
-    picks.push({
-      name,
-      scores: [[+vals[0],+vals[1]],[+vals[2],+vals[3]],[+vals[4],+vals[5]]],
-      at: new Date().toISOString()
-    });
+    picks.push({ name, scores: [[+vals[0],+vals[1]],[+vals[2],+vals[3]],[+vals[4],+vals[5]]], at: new Date().toISOString() });
     savePicks(picks);
     document.getElementById('pname').value = '';
     ['s1a','s1b','s2a','s2b','s3a','s3b'].forEach(id => document.getElementById(id).value = '');
     showToast(`✅ ${name}님 예측 완료!`);
-    renderParticipants();
+    renderAll();
   }
 
   function renderParticipants() {
     const picks = getPicks();
+    const payments = getPayments();
+    const acc = getAccount();
+    const fee = acc?.fee || 5000;
     const card = document.getElementById('participants-card');
     if (!picks.length) { card.style.display = 'none'; return; }
     card.style.display = 'block';
     document.getElementById('participants-label').textContent = `참가자 현황 (${picks.length}명)`;
-    document.getElementById('prize-badge').textContent = `상금 ${(picks.length * 5000).toLocaleString()}원`;
-    const matches = ['🇰🇷vs🇨🇿','🇰🇷vs🇲🇽','🇰🇷vs🇿🇦'];
-    document.getElementById('participants-list').innerHTML = picks.map(p => `
-      <div class="participant-row">
-        <span class="p-name">${p.name}</span>
-        <span class="p-scores">${p.scores.map((s,i) => `${matches[i]} <b>${s[0]}:${s[1]}</b>`).join('<br>')}</span>
-      </div>
-    `).join('');
+    document.getElementById('prize-badge').textContent = `상금 ${(picks.length * fee).toLocaleString()}원`;
+    const matchLabels = ['🇰🇷vs🇨🇿','🇰🇷vs🇲🇽','🇰🇷vs🇿🇦'];
+    document.getElementById('participants-list').innerHTML = picks.map(p => {
+      const paid = payments[p.name];
+      return `<div class="participant-row">
+        <span class="p-name">${p.name}${paid ? '<span class="paid-mark">입금</span>' : ''}</span>
+        <span class="p-scores">${p.scores.map((s,i) => `${matchLabels[i]} <b>${s[0]}:${s[1]}</b>`).join('<br>')}</span>
+      </div>`;
+    }).join('');
   }
 
-  renderParticipants();
+  function renderAll() { renderAccountSection(); renderParticipants(); }
+  renderAll();
 </script>
 </body>
 </html>

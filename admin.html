@@ -9,284 +9,124 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --red: #C8102E;
-    --navy: #002868;
-    --bg: #F6F6F4;
-    --card: #FFFFFF;
-    --border: #E2E2DE;
-    --text: #1A1A1A;
-    --muted: #6B6B68;
-    --gold: #D4A017;
-    --gold-bg: #FFF9EC;
+    --red: #C8102E; --navy: #002868; --bg: #F6F6F4; --card: #FFFFFF;
+    --border: #E2E2DE; --text: #1A1A1A; --muted: #6B6B68;
+    --gold: #D4A017; --gold-bg: #FFF9EC;
+    --green: #1a7a4a; --green-bg: #E8F8EF; --green-border: #A8DFC0;
   }
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: 4rem;
-  }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 4rem; }
 
   /* LOGIN */
-  .login-wrap {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-  }
-  .login-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2.5rem 2rem;
-    width: 100%;
-    max-width: 380px;
-    text-align: center;
-  }
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+  .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 380px; text-align: center; }
   .login-icon { font-size: 2.5rem; margin-bottom: 1rem; }
   .login-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
   .login-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
-  .pw-input {
-    width: 100%;
-    height: 48px;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 0 14px;
-    font-size: 1rem;
-    font-family: 'Noto Sans KR', sans-serif;
-    text-align: center;
-    letter-spacing: 4px;
-    margin-bottom: 12px;
-    transition: border-color 0.15s;
-  }
+  .pw-input { width: 100%; height: 48px; border: 1.5px solid var(--border); border-radius: 12px; padding: 0 14px; font-size: 1rem; font-family: 'Noto Sans KR', sans-serif; text-align: center; letter-spacing: 4px; margin-bottom: 12px; transition: border-color 0.15s; }
   .pw-input:focus { outline: none; border-color: var(--navy); }
-  .login-btn {
-    width: 100%;
-    height: 48px;
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
+  .login-btn { width: 100%; height: 48px; background: var(--navy); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background 0.15s; }
   .login-btn:hover { background: #001f52; }
   .login-error { font-size: 0.8rem; color: var(--red); margin-top: 8px; display: none; }
 
-  /* ADMIN */
+  /* ADMIN SHELL */
   .admin-wrap { display: none; }
-  .topbar {
-    background: var(--navy);
-    padding: 1rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .topbar { background: var(--navy); padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
   .topbar-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
   .topbar-sub { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
-  .logout-btn {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.6);
-    background: none;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    padding: 4px 12px;
-    cursor: pointer;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-
+  .logout-btn { font-size: 0.75rem; color: rgba(255,255,255,0.6); background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 4px 12px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
   .container { max-width: 680px; margin: 0 auto; padding: 0 1rem; }
 
-  /* SECTION */
-  .section-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.25rem 1.5rem;
-    margin-top: 1.25rem;
-  }
-  .section-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  /* SECTION CARD */
+  .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem 1.5rem; margin-top: 1.25rem; }
+  .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
 
   /* STAT STRIP */
-  .stat-strip {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 1.25rem;
-  }
-  .stat-box {
-    background: var(--bg);
-    border-radius: 12px;
-    padding: 0.9rem 1rem;
-    text-align: center;
-  }
+  .stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1.25rem; }
+  .stat-box { background: var(--bg); border-radius: 12px; padding: 0.9rem 1rem; text-align: center; }
   .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
   .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
-  /* RESULT INPUT */
-  .match-result-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
+  /* ACCOUNT SETTINGS */
+  .field-row { display: grid; grid-template-columns: 90px 1fr; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .field-row:last-of-type { margin-bottom: 0; }
+  .field-label { font-size: 0.8rem; color: var(--muted); }
+  .field-input { height: 40px; border: 1.5px solid var(--border); border-radius: 10px; padding: 0 12px; font-size: 0.88rem; font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); transition: border-color 0.15s; width: 100%; }
+  .field-input:focus { outline: none; border-color: var(--navy); background: #fff; }
+  .field-input.fee-input { font-weight: 700; color: var(--red); }
+  .save-account-btn { width: 100%; height: 42px; margin-top: 14px; background: var(--navy); color: #fff; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background 0.15s; }
+  .save-account-btn:hover { background: #001f52; }
+
+  /* PAYMENT MANAGEMENT */
+  .payment-list { display: flex; flex-direction: column; gap: 0; }
+  .payment-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+  .payment-row:last-child { border-bottom: none; }
+  .payment-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); flex: 1; }
+  .payment-scores { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+  .payment-toggle {
+    position: relative; width: 44px; height: 24px; cursor: pointer; flex-shrink: 0;
   }
+  .payment-toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--border); border-radius: 24px; transition: background 0.2s;
+  }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+    background: white; border-radius: 50%; transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .payment-toggle input:checked ~ .toggle-track { background: var(--green); }
+  .payment-toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
+  .paid-label { font-size: 0.72rem; font-weight: 700; color: var(--green); background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 10px; padding: 2px 8px; }
+  .unpaid-label { font-size: 0.72rem; color: var(--muted); }
+  .payment-summary { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+  .payment-empty { font-size: 0.85rem; color: var(--muted); text-align: center; padding: 1.5rem 0; }
+
+  /* RESULT INPUT */
+  .match-result-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
   .match-result-row:last-child { border-bottom: none; }
   .mr-info { flex: 1; }
   .mr-name { font-size: 0.88rem; font-weight: 700; }
   .mr-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
   .score-box { display: flex; align-items: center; gap: 5px; }
-  .score-input {
-    width: 44px; height: 44px;
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    background: var(--bg);
-    color: var(--text);
-    -moz-appearance: textfield;
-    transition: border-color 0.15s;
-  }
+  .score-input { width: 44px; height: 44px; text-align: center; font-size: 1.1rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text); -moz-appearance: textfield; transition: border-color 0.15s; }
   .score-input:focus { outline: none; border-color: var(--red); background: #fff; }
-  .score-input::-webkit-outer-spin-button,
-  .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .score-input::-webkit-outer-spin-button, .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .score-sep { font-size: 1rem; font-weight: 700; color: var(--muted); }
-  .confirmed-badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #1a7a4a;
-    background: #E8F8EF;
-    border: 1px solid #A8DFC0;
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  .save-btn {
-    width: 100%;
-    height: 44px;
-    margin-top: 1rem;
-    background: var(--red);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    font-family: 'Noto Sans KR', sans-serif;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-  }
+  .save-btn { width: 100%; height: 44px; margin-top: 1rem; background: var(--red); color: #fff; border: none; border-radius: 12px; font-size: 0.88rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background 0.15s, transform 0.1s; }
   .save-btn:hover { background: #a80c25; }
   .save-btn:active { transform: scale(0.98); }
 
-  /* LEADERBOARD */
-  .lb-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 11px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .lb-row:last-child { border-bottom: none; }
-  .lb-rank {
-    font-size: 0.88rem;
-    font-weight: 700;
-    min-width: 28px;
-    text-align: center;
-    color: var(--muted);
-  }
-  .lb-rank.first { color: #C8982A; font-size: 1.1rem; }
-  .lb-rank.second { color: #888; font-size: 1rem; }
-  .lb-rank.third { color: #A0633A; font-size: 1rem; }
-  .lb-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); }
-  .lb-scores { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.7; }
-  .lb-pts {
-    margin-left: auto;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    min-width: 40px;
-    text-align: right;
-  }
-  .lb-pts-unit { font-size: 0.7rem; font-weight: 400; color: var(--muted); }
-  .pt-chip {
-    display: inline-block;
-    font-size: 0.62rem;
-    font-weight: 700;
-    padding: 1px 6px;
-    border-radius: 10px;
-    margin-left: 3px;
-    vertical-align: middle;
-  }
-  .pt-exact { background: #E6F0FF; color: #002868; }
-  .pt-result { background: #FFF0E6; color: #8B3A00; }
-  .pt-miss { background: var(--bg); color: var(--muted); }
-
-  /* EXPORT */
-  .export-btn {
-    height: 40px;
-    padding: 0 18px;
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    font-family: 'Noto Sans KR', sans-serif;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .export-btn:hover { background: #EAEAE6; }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 2rem; left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--navy);
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 10px 22px;
-    border-radius: 30px;
-    opacity: 0;
-    transition: opacity 0.25s, transform 0.25s;
-    z-index: 999;
-    white-space: nowrap;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* EMPTY */
-  .empty { text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.85rem; }
-
-  .winner-banner {
-    background: var(--gold-bg);
-    border: 1.5px solid #E6C87A;
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    margin-top: 1.25rem;
-    text-align: center;
-    display: none;
-  }
+  /* WINNER */
+  .winner-banner { background: var(--gold-bg); border: 1.5px solid #E6C87A; border-radius: 14px; padding: 1rem 1.25rem; margin-top: 1.25rem; text-align: center; display: none; }
   .winner-banner .trophy { font-size: 2rem; }
   .winner-banner .winner-name { font-size: 1.1rem; font-weight: 700; color: var(--gold); margin: 4px 0; }
   .winner-banner .winner-sub { font-size: 0.8rem; color: var(--muted); }
+
+  /* LEADERBOARD */
+  .lb-row { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-rank { font-size: 0.88rem; font-weight: 700; min-width: 28px; text-align: center; color: var(--muted); }
+  .lb-rank.first { color: #C8982A; font-size: 1.1rem; }
+  .lb-rank.second { color: #888; font-size: 1rem; }
+  .lb-rank.third { color: #A0633A; font-size: 1rem; }
+  .lb-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  .lb-scores { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.7; }
+  .lb-pts { margin-left: auto; font-size: 1.1rem; font-weight: 700; color: var(--text); min-width: 40px; text-align: right; }
+  .lb-pts-unit { font-size: 0.7rem; font-weight: 400; color: var(--muted); }
+  .pt-chip { display: inline-block; font-size: 0.62rem; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 3px; vertical-align: middle; }
+  .pt-exact { background: #E6F0FF; color: #002868; }
+  .pt-result { background: #FFF0E6; color: #8B3A00; }
+  .pt-miss { background: var(--bg); color: var(--muted); }
+  .paid-chip { font-size: 0.65rem; font-weight: 700; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 10px; padding: 1px 7px; }
+
+  /* EXPORT / DANGER */
+  .export-btn { height: 40px; padding: 0 18px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 0.8rem; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background 0.15s; }
+  .export-btn:hover { background: #EAEAE6; }
+
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; font-size: 0.85rem; font-weight: 500; padding: 10px 22px; border-radius: 30px; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 999; white-space: nowrap; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .empty { text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.85rem; }
 </style>
 </head>
 <body>
@@ -303,7 +143,7 @@
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ADMIN -->
 <div class="admin-wrap" id="admin-wrap">
   <div class="topbar">
     <div>
@@ -322,19 +162,49 @@
         <div class="stat-lbl">참가자</div>
       </div>
       <div class="stat-box">
+        <div class="stat-num" id="stat-paid">0/0</div>
+        <div class="stat-lbl">입금 완료</div>
+      </div>
+      <div class="stat-box">
         <div class="stat-num" id="stat-prize">0</div>
         <div class="stat-lbl">상금 (원)</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-num" id="stat-done">0/3</div>
-        <div class="stat-lbl">결과 입력</div>
+    </div>
+
+    <!-- 계좌 설정 -->
+    <div class="section-card">
+      <div class="section-label">입금 계좌 설정</div>
+      <div class="field-row">
+        <label class="field-label">은행명</label>
+        <input type="text" class="field-input" id="cfg-bank" placeholder="예) 카카오뱅크">
+      </div>
+      <div class="field-row">
+        <label class="field-label">계좌번호</label>
+        <input type="text" class="field-input" id="cfg-account" placeholder="예) 3333-12-3456789">
+      </div>
+      <div class="field-row">
+        <label class="field-label">예금주</label>
+        <input type="text" class="field-input" id="cfg-holder" placeholder="예) 홍길동">
+      </div>
+      <div class="field-row">
+        <label class="field-label">참가비 (원)</label>
+        <input type="number" class="field-input fee-input" id="cfg-fee" placeholder="5000" min="0">
+      </div>
+      <button class="save-account-btn" onclick="saveAccount()">계좌 정보 저장 → 참가자 페이지에 즉시 반영</button>
+    </div>
+
+    <!-- 입금 확인 관리 -->
+    <div class="section-card">
+      <div class="section-label">입금 확인 관리</div>
+      <div class="payment-summary" id="payment-summary">참가자가 없습니다</div>
+      <div class="payment-list" id="payment-list">
+        <div class="payment-empty">참가자가 없습니다</div>
       </div>
     </div>
 
-    <!-- ACTUAL RESULTS INPUT -->
+    <!-- 경기 결과 입력 -->
     <div class="section-card">
       <div class="section-label">실제 경기 결과 입력</div>
-
       <div class="match-result-row">
         <div class="mr-info">
           <div class="mr-name">🇰🇷 대한민국 vs 체코 🇨🇿</div>
@@ -346,7 +216,6 @@
           <input type="number" class="score-input" id="r1b" min="0" max="20" placeholder="–">
         </div>
       </div>
-
       <div class="match-result-row">
         <div class="mr-info">
           <div class="mr-name">🇰🇷 대한민국 vs 멕시코 🇲🇽</div>
@@ -358,7 +227,6 @@
           <input type="number" class="score-input" id="r2b" min="0" max="20" placeholder="–">
         </div>
       </div>
-
       <div class="match-result-row">
         <div class="mr-info">
           <div class="mr-name">🇰🇷 대한민국 vs 남아공 🇿🇦</div>
@@ -370,18 +238,17 @@
           <input type="number" class="score-input" id="r3b" min="0" max="20" placeholder="–">
         </div>
       </div>
-
       <button class="save-btn" onclick="saveResults()">결과 저장 &amp; 점수 계산</button>
     </div>
 
-    <!-- WINNER BANNER -->
+    <!-- 우승자 배너 -->
     <div class="winner-banner" id="winner-banner">
       <div class="trophy">🏆</div>
       <div class="winner-name" id="winner-name">—</div>
       <div class="winner-sub" id="winner-sub"></div>
     </div>
 
-    <!-- LEADERBOARD -->
+    <!-- 순위표 -->
     <div class="section-card">
       <div class="section-label">
         <span>참가자 순위</span>
@@ -390,7 +257,7 @@
       <div id="leaderboard"><div class="empty">아직 참가자가 없습니다</div></div>
     </div>
 
-    <!-- DELETE ALL -->
+    <!-- 초기화 -->
     <div style="text-align:center; margin-top:1.5rem;">
       <button class="export-btn" style="color:#C8102E; border-color:#F5C0CC;" onclick="clearAll()">⚠️ 전체 데이터 초기화</button>
     </div>
@@ -403,30 +270,29 @@
 <script>
   const STORAGE_KEY = 'wc2026_picks';
   const RESULT_KEY  = 'wc2026_results';
-  const ADMIN_PW    = 'goal2026';   // ← 비밀번호 여기서 변경
+  const ACCOUNT_KEY = 'wc2026_account';
+  const PAYMENT_KEY = 'wc2026_payments';
+  const ADMIN_PW    = 'goal2026'; // ← 비밀번호 여기서 변경
 
-  const matches = [
+  const matchLabels = [
     { label: '🇰🇷vs🇨🇿 체코전', date: '6/12' },
     { label: '🇰🇷vs🇲🇽 멕시코전', date: '6/19' },
     { label: '🇰🇷vs🇿🇦 남아공전', date: '6/25' },
   ];
 
-  function getPicks() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
-  }
-  function getResults() {
-    try { return JSON.parse(localStorage.getItem(RESULT_KEY)) || [null, null, null]; } catch { return [null, null, null]; }
-  }
+  function getPicks()    { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
+  function getResults()  { try { return JSON.parse(localStorage.getItem(RESULT_KEY))  || [null,null,null]; } catch { return [null,null,null]; } }
+  function getAccount()  { try { return JSON.parse(localStorage.getItem(ACCOUNT_KEY)) || {}; } catch { return {}; } }
+  function getPayments() { try { return JSON.parse(localStorage.getItem(PAYMENT_KEY)) || {}; } catch { return {}; } }
+
   function showToast(msg, dur = 2500) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), dur);
   }
 
   function login() {
-    const val = document.getElementById('pw-input').value;
-    if (val === ADMIN_PW) {
+    if (document.getElementById('pw-input').value === ADMIN_PW) {
       document.getElementById('login-wrap').style.display = 'none';
       document.getElementById('admin-wrap').style.display = 'block';
       loadAdmin();
@@ -441,28 +307,57 @@
     document.getElementById('pw-input').value = '';
   }
 
+  /* 계좌 설정 저장 */
+  function saveAccount() {
+    const acc = {
+      bank:    document.getElementById('cfg-bank').value.trim(),
+      account: document.getElementById('cfg-account').value.trim(),
+      holder:  document.getElementById('cfg-holder').value.trim(),
+      fee:     parseInt(document.getElementById('cfg-fee').value) || 5000,
+    };
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(acc));
+    showToast('✅ 계좌 정보 저장됨 · 참가자 페이지에 반영됩니다');
+    loadAdmin();
+  }
+
+  /* 입금 토글 */
+  function togglePayment(name, checked) {
+    const payments = getPayments();
+    payments[name] = checked;
+    localStorage.setItem(PAYMENT_KEY, JSON.stringify(payments));
+    loadAdmin();
+  }
+
+  /* 점수 계산 */
   function scoreResult(actual, predicted) {
     if (!actual) return { pts: 0, type: 'pending' };
-    const [ra, rb] = actual;
-    const [pa, pb] = predicted;
+    const [ra, rb] = actual, [pa, pb] = predicted;
     if (ra === pa && rb === pb) return { pts: 3, type: 'exact' };
-    const actualWinner  = ra > rb ? 1 : ra < rb ? -1 : 0;
-    const predictedWinner = pa > pb ? 1 : pa < pb ? -1 : 0;
-    if (actualWinner === predictedWinner) return { pts: 1, type: 'result' };
-    return { pts: 0, type: 'miss' };
+    const aw = ra > rb ? 1 : ra < rb ? -1 : 0;
+    const pw = pa > pb ? 1 : pa < pb ? -1 : 0;
+    return aw === pw ? { pts: 1, type: 'result' } : { pts: 0, type: 'miss' };
   }
 
   function loadAdmin() {
-    const picks   = getPicks();
-    const results = getResults();
+    const picks    = getPicks();
+    const results  = getResults();
+    const acc      = getAccount();
+    const payments = getPayments();
+    const fee      = acc.fee || 5000;
 
-    // Stats
+    /* 계좌 필드 채우기 */
+    document.getElementById('cfg-bank').value    = acc.bank    || '';
+    document.getElementById('cfg-account').value = acc.account || '';
+    document.getElementById('cfg-holder').value  = acc.holder  || '';
+    document.getElementById('cfg-fee').value     = acc.fee     || 5000;
+
+    /* 통계 */
+    const paidCount = picks.filter(p => payments[p.name]).length;
     document.getElementById('stat-count').textContent = picks.length;
-    document.getElementById('stat-prize').textContent = (picks.length * 5000).toLocaleString();
-    const done = results.filter(r => r !== null).length;
-    document.getElementById('stat-done').textContent = `${done}/3`;
+    document.getElementById('stat-paid').textContent  = `${paidCount}/${picks.length}`;
+    document.getElementById('stat-prize').textContent = (picks.length * fee).toLocaleString();
 
-    // Load saved results into inputs
+    /* 결과 입력 복원 */
     results.forEach((r, i) => {
       if (r) {
         document.getElementById(`r${i+1}a`).value = r[0];
@@ -470,54 +365,77 @@
       }
     });
 
-    // Leaderboard
+    /* 입금 관리 */
+    const payList = document.getElementById('payment-list');
+    const paySummary = document.getElementById('payment-summary');
+    if (!picks.length) {
+      payList.innerHTML = '<div class="payment-empty">참가자가 없습니다</div>';
+      paySummary.textContent = '';
+    } else {
+      paySummary.textContent = `총 ${picks.length}명 · 입금 완료 ${paidCount}명 · 미입금 ${picks.length - paidCount}명 · 수령 상금 ${(picks.length * fee).toLocaleString()}원`;
+      payList.innerHTML = picks.map(p => {
+        const paid = !!payments[p.name];
+        const scoreStr = p.scores.map((s,i) => `${matchLabels[i].label} ${s[0]}:${s[1]}`).join(' · ');
+        return `<div class="payment-row">
+          <div style="flex:1;">
+            <div class="payment-name">${p.name} ${paid ? '<span class="paid-chip">입금완료</span>' : ''}</div>
+            <div class="payment-scores">${scoreStr}</div>
+          </div>
+          <label class="payment-toggle">
+            <input type="checkbox" ${paid ? 'checked' : ''} onchange="togglePayment('${p.name}', this.checked)">
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </div>`;
+      }).join('');
+    }
+
+    /* 순위표 */
     const lb = document.getElementById('leaderboard');
-    if (!picks.length) { lb.innerHTML = '<div class="empty">아직 참가자가 없습니다</div>'; updateWinner([], results); return; }
+    if (!picks.length) { lb.innerHTML = '<div class="empty">아직 참가자가 없습니다</div>'; updateWinner([], results, fee); return; }
 
     const scored = picks.map(p => {
-      const matchScores = p.scores.map((s, i) => scoreResult(results[i], s));
-      const total = matchScores.reduce((a, b) => a + b.pts, 0);
-      return { ...p, matchScores, total };
+      const ms = p.scores.map((s, i) => scoreResult(results[i], s));
+      return { ...p, ms, total: ms.reduce((a,b) => a + b.pts, 0) };
     }).sort((a, b) => b.total - a.total);
 
-    const chipLabels = { exact: '정확', result: '결과', miss: '오답', pending: '대기' };
-    const chipClass  = { exact: 'pt-exact', result: 'pt-result', miss: 'pt-miss', pending: 'pt-miss' };
-    const rankEmoji  = ['🥇','🥈','🥉'];
+    const chipLbl = { exact:'정확', result:'결과', miss:'오답', pending:'대기' };
+    const chipCls = { exact:'pt-exact', result:'pt-result', miss:'pt-miss', pending:'pt-miss' };
+    const rankEmoji = ['🥇','🥈','🥉'];
 
     lb.innerHTML = scored.map((p, idx) => {
-      const rankClass = idx === 0 ? 'first' : idx === 1 ? 'second' : idx === 2 ? 'third' : '';
-      const rankDisp  = idx < 3 ? rankEmoji[idx] : `${idx+1}`;
-      const scoreDetail = p.matchScores.map((ms, i) =>
-        `${matches[i].label} <b>${p.scores[i][0]}:${p.scores[i][1]}</b> <span class="pt-chip ${chipClass[ms.type]}">${chipLabels[ms.type]} +${ms.pts}</span>`
+      const rc = idx === 0 ? 'first' : idx === 1 ? 'second' : idx === 2 ? 'third' : '';
+      const rd = idx < 3 ? rankEmoji[idx] : `${idx+1}`;
+      const detail = p.ms.map((ms, i) =>
+        `${matchLabels[i].label} <b>${p.scores[i][0]}:${p.scores[i][1]}</b> <span class="pt-chip ${chipCls[ms.type]}">${chipLbl[ms.type]} +${ms.pts}</span>`
       ).join('<br>');
-      return `
-        <div class="lb-row">
-          <div class="lb-rank ${rankClass}">${rankDisp}</div>
-          <div style="flex:1;">
-            <div class="lb-name">${p.name}</div>
-            <div class="lb-scores">${scoreDetail}</div>
-          </div>
-          <div class="lb-pts">${p.total}<span class="lb-pts-unit">점</span></div>
+      const paidBadge = payments[p.name] ? '<span class="paid-chip">입금</span>' : '';
+      return `<div class="lb-row">
+        <div class="lb-rank ${rc}">${rd}</div>
+        <div style="flex:1;">
+          <div class="lb-name">${p.name} ${paidBadge}</div>
+          <div class="lb-scores">${detail}</div>
         </div>
-      `;
+        <div class="lb-pts">${p.total}<span class="lb-pts-unit">점</span></div>
+      </div>`;
     }).join('');
 
-    updateWinner(scored, results);
+    updateWinner(scored, results, fee);
   }
 
-  function updateWinner(scored, results) {
+  function updateWinner(scored, results, fee) {
     const banner = document.getElementById('winner-banner');
-    const allDone = results.every(r => r !== null);
-    if (!allDone || !scored.length) { banner.style.display = 'none'; return; }
+    if (!results.every(r => r !== null) || !scored.length) { banner.style.display = 'none'; return; }
     const top = scored.filter(p => p.total === scored[0].total);
+    const prize = (getPicks().length * fee).toLocaleString();
     banner.style.display = 'block';
-    const prize = (getPicks().length * 5000).toLocaleString();
     if (top.length === 1) {
       document.getElementById('winner-name').textContent = `🏆 ${top[0].name} (${top[0].total}점)`;
       document.getElementById('winner-sub').textContent = `상금 ${prize}원 수령!`;
     } else {
       document.getElementById('winner-name').textContent = top.map(p => p.name).join(', ');
-      document.getElementById('winner-sub').textContent = `공동 ${top[0].total}점 · ${prize}원 균등 배분 (1인 ${(getPicks().length * 5000 / top.length).toLocaleString()}원)`;
+      const share = Math.floor(getPicks().length * fee / top.length).toLocaleString();
+      document.getElementById('winner-sub').textContent = `공동 ${top[0].total}점 · ${prize}원 균등 배분 (1인 ${share}원)`;
     }
   }
 
@@ -533,40 +451,38 @@
   }
 
   function copyResults() {
-    const picks   = getPicks();
-    const results = getResults();
+    const picks = getPicks(), results = getResults(), payments = getPayments();
+    const acc = getAccount(); const fee = acc.fee || 5000;
     if (!picks.length) { showToast('참가자가 없습니다'); return; }
 
     const scored = picks.map(p => {
-      const matchScores = p.scores.map((s, i) => scoreResult(results[i], s));
-      const total = matchScores.reduce((a, b) => a + b.pts, 0);
-      return { ...p, matchScores, total };
+      const ms = p.scores.map((s, i) => scoreResult(results[i], s));
+      return { ...p, ms, total: ms.reduce((a,b) => a+b.pts, 0) };
     }).sort((a, b) => b.total - a.total);
 
-    const resultLine = results.map((r, i) =>
-      `${matches[i].label}: ${r ? `${r[0]}:${r[1]}` : '미정'}`
-    ).join(' / ');
+    const resultLine = results.map((r, i) => `${matchLabels[i].label}: ${r ? `${r[0]}:${r[1]}` : '미정'}`).join(' / ');
+    const paidCount = picks.filter(p => payments[p.name]).length;
 
     const lines = [
       `[2026 월드컵 스코어 내기 결과]`,
-      `참가: ${picks.length}명 · 상금: ${(picks.length * 5000).toLocaleString()}원`,
-      `실제 결과: ${resultLine}`,
-      '',
+      `참가: ${picks.length}명 · 입금완료: ${paidCount}명 · 상금: ${(picks.length * fee).toLocaleString()}원`,
+      `실제 결과: ${resultLine}`, '',
       ...scored.map((p, i) => {
-        const detail = p.scores.map((s,j) => `${matches[j].label} ${s[0]}:${s[1]}`).join(' / ');
-        return `${i+1}위 ${p.name} (${p.total}점) — ${detail}`;
+        const detail = p.scores.map((s,j) => `${matchLabels[j].label} ${s[0]}:${s[1]}`).join(' / ');
+        const paidMark = payments[p.name] ? ' [입금]' : ' [미입금]';
+        return `${i+1}위 ${p.name}${paidMark} (${p.total}점) — ${detail}`;
       })
     ].join('\n');
-
     navigator.clipboard.writeText(lines).then(() => showToast('📋 복사 완료!'));
   }
 
   function clearAll() {
-    if (!confirm('모든 참가자 데이터와 결과를 삭제할까요?')) return;
+    if (!confirm('모든 참가자 데이터, 결과, 입금 현황을 삭제할까요?\n계좌 설정은 유지됩니다.')) return;
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(RESULT_KEY);
+    localStorage.removeItem(PAYMENT_KEY);
     loadAdmin();
-    showToast('🗑️ 초기화 완료');
+    showToast('🗑️ 초기화 완료 (계좌 설정은 유지)');
   }
 </script>
 </body>
