@@ -51,7 +51,7 @@
   .rules-list li::before { content: ''; width: 6px; height: 6px; min-width: 6px; background: var(--red); border-radius: 50%; margin-top: 7px; }
   .rules-list strong { color: var(--navy); }
   .match-sec-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
-  .match-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; transition: opacity 0.2s; }
+  .match-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
   .match-card.closed { opacity: 0.6; background: #F0F0EE; }
   .match-seq { font-size: 0.7rem; font-weight: 700; color: var(--red); background: var(--accent-bg); border: 1px solid #F5C0CC; border-radius: 8px; padding: 5px 9px; white-space: nowrap; text-align: center; min-width: 42px; }
   .match-card.closed .match-seq { color: var(--muted); background: var(--bg); border-color: var(--border); }
@@ -100,23 +100,23 @@
   <div class="footer-link"><a href="admin.html">관리자 페이지</a></div>
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
-// ★ 여기만 본인 정보로 변경하세요 ★
 const GH_OWNER = 'goeseng';
-const GH_REPO  = 'wc2026-bet';             // 저장소 이름
-const GH_FILE  = 'data.json';              // 데이터 파일명 (자동 생성됨)
-// 참가자 페이지에는 토큰 불필요 (읽기 전용, 공개 저장소)
+const GH_REPO  = 'wc2026-bet';
+const GH_FILE  = 'data.json';
 
 const MATCH_INFO = [
   { seq:'1차전', label:'🇰🇷 대한민국 vs 체코 🇨🇿',   short:'체코전',   date:'📅 6월 12일 (금)', time:'⏰ 오전 11:00', venue:'📍 과달라하라 아크론' },
   { seq:'2차전', label:'🇰🇷 대한민국 vs 멕시코 🇲🇽', short:'멕시코전', date:'📅 6월 19일 (금)', time:'⏰ 오전 10:00', venue:'📍 과달라하라 아크론' },
   { seq:'3차전', label:'🇰🇷 대한민국 vs 남아공 🇿🇦', short:'남아공전', date:'📅 6월 25일 (목)', time:'⏰ 오전 10:00', venue:'📍 몬테레이 BBVA' },
 ];
-const DEFAULT = { account:{bank:'',account:'',holder:'',fee:5000}, matchOpen:[false,false,false], picks:[], payments:{}, results:[null,null,null] };
+const DEFAULT = {
+  account: { bank:'', account:'', holder:'', fee:5000 },
+  matchOpen: [false, false, false],
+  picks: [], payments: {}, results: [null, null, null]
+};
 
 let state = null;
-let fileSha = null; // GitHub 파일 업데이트에 필요한 sha
 
 function showToast(msg, dur=2500) {
   const t = document.getElementById('toast');
@@ -126,44 +126,17 @@ function showToast(msg, dur=2500) {
 
 async function loadData() {
   try {
-    // 공개 저장소는 토큰 없이 읽기 가능
-    const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`, {
-      headers: { 'Accept': 'application/vnd.github+json' }
-    });
-    if (res.status === 404) { state = { ...DEFAULT }; return; }
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?t=${Date.now()}`,
+      { headers: { 'Accept': 'application/vnd.github+json' } }
+    );
+    if (res.status === 404) { state = JSON.parse(JSON.stringify(DEFAULT)); return; }
+    if (!res.ok) throw new Error(res.status);
     const json = await res.json();
-    fileSha = json.sha;
-    state = JSON.parse(atob(json.content.replace(/\n/g,'')));
-  } catch(e) { state = { ...DEFAULT }; }
-}
-
-async function submitPick() {
-  const btn = document.getElementById('submit-btn');
-  const name = document.getElementById('pname')?.value.trim();
-  if (!name) { showToast('⚠️ 이름을 입력해주세요'); return; }
-  if (state.picks.find(p => p.name === name)) { showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요'); return; }
-
-  const scores = [0,1,2].map(i => {
-    if (!state.matchOpen[i]) return null;
-    const a = document.getElementById(`s${i}a`)?.value;
-    const b = document.getElementById(`s${i}b`)?.value;
-    if (a === '' || b === '' || a == null) return undefined;
-    return [+a, +b];
-  });
-  if (scores.some(s => s === undefined)) { showToast('⚠️ 접수 중인 경기 스코어를 모두 입력해주세요'); return; }
-
-  btn.disabled = true; btn.textContent = '저장 중...';
-
-  // 최신 데이터 다시 읽어서 충돌 방지
-  await loadData();
-  if (state.picks.find(p => p.name === name)) { showToast('⚠️ 이미 제출된 이름이에요'); btn.disabled=false; btn.textContent='예측 제출 →'; return; }
-
-  const newState = { ...state, picks: [...state.picks, { name, scores, at: new Date().toISOString() }] };
-
-  // 참가자 페이지는 토큰이 없으므로 저장 불가 → 안내 메시지
-  showToast('⚠️ 예측은 관리자에게 직접 전달해주세요');
-  btn.disabled = false; btn.textContent = '예측 제출 →';
-  // 참고: 실제 저장은 admin.html에서만 가능 (토큰 보유)
+    state = JSON.parse(atob(json.content.replace(/\n/g, '')));
+  } catch(e) {
+    state = JSON.parse(JSON.stringify(DEFAULT));
+  }
 }
 
 function render() {
@@ -193,7 +166,12 @@ function render() {
   }
 
   document.getElementById('hero-badge').textContent = `참가비 ${fee.toLocaleString()}원 · 전액 상금`;
-  html += `<div class="fee-banner"><div><div class="fee-label">1인 참가비</div><div class="fee-note">전액 상금으로 지급</div></div><div class="fee-amount">${fee.toLocaleString()}원</div></div>`;
+
+  html += `<div class="fee-banner">
+    <div><div class="fee-label">1인 참가비</div><div class="fee-note">전액 상금으로 지급</div></div>
+    <div class="fee-amount">${fee.toLocaleString()}원</div>
+  </div>`;
+
   html += `<div class="rules-card"><div class="sec-label">규칙 안내</div><ul class="rules-list">
     <li>각 경기마다 <strong>스코어를 완전히 맞춘 사람</strong>이 해당 경기 상금을 수령합니다.</li>
     <li>한 경기에서 여러 명이 맞추면 <strong>균등 배분</strong>합니다.</li>
@@ -235,14 +213,34 @@ function render() {
         <div class="sec-label" style="margin:0;">참가자 현황 (${picks.length}명)</div>
         <div class="prize-badge">총 상금 ${(picks.length*fee).toLocaleString()}원</div>
       </div>
-      ${picks.map(p=>`<div class="p-row">
+      ${picks.map(p => `<div class="p-row">
         <span class="p-name">${p.name}${payments[p.name]?'<span class="paid-mark">입금</span>':''}</span>
-        <span class="p-scores">${(p.scores||[]).map((s,i)=>s?`${ml[i]} <b>${s[0]}:${s[1]}</b>`:`${ml[i]} <span style="color:var(--muted)">미접수</span>`).join('<br>')}</span>
+        <span class="p-scores">${(p.scores||[]).map((s,i) => s?`${ml[i]} <b>${s[0]}:${s[1]}</b>`:`${ml[i]} <span style="color:var(--muted)">미접수</span>`).join('<br>')}</span>
       </div>`).join('')}
     </div>`;
   }
 
   document.getElementById('app').innerHTML = html;
+}
+
+async function submitPick() {
+  const btn = document.getElementById('submit-btn');
+  const name = document.getElementById('pname')?.value.trim();
+  if (!name) { showToast('⚠️ 이름을 입력해주세요'); return; }
+  if (state.picks.find(p => p.name === name)) { showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요'); return; }
+
+  const scores = [0,1,2].map(i => {
+    if (!state.matchOpen[i]) return null;
+    const a = document.getElementById(`s${i}a`)?.value;
+    const b = document.getElementById(`s${i}b`)?.value;
+    if (a === '' || b === '' || a == null) return undefined;
+    return [+a, +b];
+  });
+  if (scores.some(s => s === undefined)) { showToast('⚠️ 접수 중인 경기 스코어를 모두 입력해주세요'); return; }
+
+  btn.disabled = true; btn.textContent = '저장 중...';
+  showToast('⚠️ 예측은 관리자에게 직접 전달해주세요 (카카오톡 등)');
+  btn.disabled = false; btn.textContent = '예측 제출 →';
 }
 
 async function init() { await loadData(); render(); }
