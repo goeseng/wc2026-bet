@@ -134,7 +134,7 @@ async function loadData() {
     if (res.status === 404) { state = JSON.parse(JSON.stringify(DEFAULT)); return; }
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
-    state = JSON.parse(atob(json.content.replace(/\n/g, '')));
+    state = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\n/g, '')))));
   } catch(e) {
     state = JSON.parse(JSON.stringify(DEFAULT));
   }
