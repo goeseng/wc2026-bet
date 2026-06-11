@@ -134,6 +134,7 @@ async function loadData() {
     if (res.status === 404) { state = JSON.parse(JSON.stringify(DEFAULT)); return; }
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
+    window._fileSha = json.sha;
     state = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\n/g, '')))));
   } catch(e) {
     state = JSON.parse(JSON.stringify(DEFAULT));
@@ -240,8 +241,42 @@ async function submitPick() {
   if (scores.some(s => s === undefined)) { showToast('⚠️ 접수 중인 경기 스코어를 모두 입력해주세요'); return; }
 
   btn.disabled = true; btn.textContent = '저장 중...';
-  showToast('⚠️ 예측은 관리자에게 직접 전달해주세요 (카카오톡 등)');
-  btn.disabled = false; btn.textContent = '예측 제출 →';
+
+  try {
+    // 최신 데이터 먼저 읽어서 충돌 방지
+    await loadData();
+    if (state.picks.find(p => p.name === name)) {
+      showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요');
+      btn.disabled = false; btn.textContent = '예측 제출 →'; return;
+    }
+
+    const newState = { ...state, picks: [...state.picks, { name, scores, at: new Date().toISOString() }] };
+
+    // GitHub에 저장
+    const body = {
+      message: `pick: ${name} ${new Date().toISOString()}`,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(newState, null, 2))))
+    };
+    if (window._fileSha) body.sha = window._fileSha;
+
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+      {
+        method: 'PUT',
+        headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }
+    );
+    if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
+    const json = await res.json();
+    window._fileSha = json.content.sha;
+    state = newState;
+    showToast(`✅ ${name}님 예측 제출 완료!`);
+    render();
+  } catch(e) {
+    showToast(`❌ 제출 실패: ${e.message}`);
+    btn.disabled = false; btn.textContent = '예측 제출 →';
+  }
 }
 
 async function init() { await loadData(); render(); }
