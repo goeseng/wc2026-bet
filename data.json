@@ -1,0 +1,20 @@
+{
+  "account": {
+    "bank": "",
+    "account": "",
+    "holder": "",
+    "fee": 5000
+  },
+  "matchOpen": [
+    true,
+    false,
+    false
+  ],
+  "picks": [],
+  "payments": {},
+  "results": [
+    null,
+    null,
+    null
+  ]
+}
