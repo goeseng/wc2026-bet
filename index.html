@@ -104,6 +104,7 @@
 const GH_OWNER = 'goeseng';
 const GH_REPO  = 'wc2026-bet';
 const GH_FILE  = 'data.json';
+const GH_TOKEN = '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';
 
 const MATCH_INFO = [
   { seq:'1차전', label:'🇰🇷 대한민국 vs 체코 🇨🇿',   short:'체코전',   date:'📅 6월 12일 (금)', time:'⏰ 오전 11:00', venue:'📍 과달라하라 아크론' },
@@ -128,7 +129,7 @@ async function loadData() {
   try {
     const res = await fetch(
       `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?t=${Date.now()}`,
-      { headers: { 'Accept': 'application/vnd.github+json' } }
+      { headers: { 'Authorization': `token ${GH_TOKEN}`, 'Accept': 'application/vnd.github+json' } }
     );
     if (res.status === 404) { state = JSON.parse(JSON.stringify(DEFAULT)); return; }
     if (!res.ok) throw new Error(res.status);
