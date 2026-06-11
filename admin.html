@@ -225,7 +225,7 @@ async function ghLoad() {
   if (!res.ok) throw new Error(`GitHub 읽기 실패: ${res.status}`);
   const json = await res.json();
   fileSha = json.sha;
-  state = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\n/g,'')))));
+  state = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(json.content.replace(/\n/g,'')), c => c.charCodeAt(0))));
 }
 
 async function ghSave(newState) {
