@@ -1,8 +1,8 @@
 {
   "account": {
-    "bank": "",
-    "account": "",
-    "holder": "",
+    "bank": "카카오뱅크",
+    "account": "3333-03-7844714",
+    "holder": "이상민",
     "fee": 5000
   },
   "matchOpen": [
