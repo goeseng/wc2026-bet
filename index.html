@@ -12,6 +12,7 @@
     --red: #C8102E; --navy: #002868; --bg: #F6F6F4; --card: #FFF;
     --border: #E2E2DE; --text: #1A1A1A; --muted: #6B6B68; --accent-bg: #FFF5F7;
     --green: #1a7a4a; --green-bg: #E8F8EF; --green-border: #A8DFC0;
+    --orange: #b84f00; --orange-bg: #FFF3E8; --orange-border: #F5C89A;
   }
   body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 4rem; }
   .hero { background: var(--navy); padding: 2.5rem 1.5rem 2rem; text-align: center; position: relative; overflow: hidden; }
@@ -82,6 +83,36 @@
   .p-name { font-weight: 700; color: var(--navy); min-width: 60px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
   .paid-mark { font-size: 0.65rem; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 10px; padding: 1px 6px; font-weight: 700; }
   .p-scores { color: var(--muted); text-align: right; line-height: 1.8; }
+
+  /* ── 결과 & 상금 섹션 ── */
+  .result-section { margin-top: 2rem; }
+  .result-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 10px; }
+  .result-card-head { display: flex; align-items: center; gap: 12px; padding: 0.9rem 1.25rem; }
+  .result-seq { font-size: 0.7rem; font-weight: 700; border-radius: 8px; padding: 5px 9px; white-space: nowrap; text-align: center; min-width: 42px; }
+  .result-seq.done   { color: var(--navy); background: #EDF1FF; border: 1px solid #B8C8F0; }
+  .result-seq.rolled { color: var(--orange); background: var(--orange-bg); border: 1px solid var(--orange-border); }
+  .result-seq.pend   { color: var(--muted); background: var(--bg); border: 1px solid var(--border); }
+  .result-body { flex: 1; }
+  .result-match-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+  .result-score-display { font-size: 1.4rem; font-weight: 700; color: var(--navy); letter-spacing: 2px; }
+  .result-score-pend { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+  .result-pot { font-size: 0.78rem; font-weight: 700; white-space: nowrap; text-align: right; }
+  .result-pot.win    { color: var(--green); }
+  .result-pot.rolled { color: var(--orange); }
+  .result-pot.pend   { color: var(--muted); }
+  .result-winners { border-top: 1px solid var(--border); padding: 0.75rem 1.25rem; background: var(--bg); }
+  .result-winners-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .winner-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+  .winner-name { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
+  .winner-chip { font-size: 0.68rem; font-weight: 700; background: #EDF1FF; color: var(--navy); border: 1px solid #B8C8F0; border-radius: 8px; padding: 2px 8px; }
+  .roll-msg { font-size: 0.82rem; color: var(--orange); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .pend-msg { font-size: 0.82rem; color: var(--muted); }
+  .final-split-card { background: #EDF1FF; border: 1.5px solid #B8C8F0; border-radius: 14px; padding: 1.25rem; text-align: center; margin-top: 0.5rem; }
+  .final-split-icon { font-size: 2rem; margin-bottom: 6px; }
+  .final-split-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .final-split-sub { font-size: 0.8rem; color: var(--muted); }
+
   .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; font-size: 0.85rem; font-weight: 500; padding: 10px 22px; border-radius: 30px; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 999; white-space: nowrap; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .footer-link { text-align: center; margin-top: 2.5rem; font-size: 0.75rem; color: var(--muted); }
@@ -141,8 +172,89 @@ async function loadData() {
   }
 }
 
+function calcPrize(picks, results, totalPot) {
+  const perGame = Math.floor(totalPot / 3);
+  let rollover = 0;
+  const out = results.map((r, i) => {
+    const pot = perGame + rollover;
+    if (!r) return { pot, winners: null, status: 'pend' };
+    const [ra, rb] = r;
+    const winners = picks.filter(p => p.scores?.[i]?.[0] === ra && p.scores?.[i]?.[1] === rb).map(p => p.name);
+    if (winners.length) { rollover = 0; return { pot, winners, status: 'win', payout: Math.floor(pot / winners.length) }; }
+    rollover = pot; return { pot, winners: [], status: 'roll' };
+  });
+  const allRoll = out.every(m => m.status === 'roll');
+  return { matchResults: out, finalBanner: allRoll && picks.length ? { amount: Math.floor(totalPot / picks.length) } : null };
+}
+
+function renderResults(picks, results, fee) {
+  const hasAnyResult = results.some(r => r !== null);
+  if (!hasAnyResult || !picks.length) return '';
+
+  const totalPot = picks.length * fee;
+  const { matchResults, finalBanner } = calcPrize(picks, results, totalPot);
+
+  let h = `<div class="result-section"><div class="result-section-label">경기 결과 &amp; 상금 현황</div>`;
+
+  matchResults.forEach((m, i) => {
+    const r = results[i];
+    let seqClass, potText, potClass, bodyHtml;
+
+    if (m.status === 'pend') {
+      seqClass = 'pend'; potText = `${m.pot.toLocaleString()}원 대기`; potClass = 'pend';
+    } else if (m.status === 'win') {
+      seqClass = 'done'; potText = `${m.pot.toLocaleString()}원 지급`; potClass = 'win';
+    } else {
+      seqClass = 'rolled'; potText = `${m.pot.toLocaleString()}원 이월`; potClass = 'rolled';
+    }
+
+    h += `<div class="result-card">
+      <div class="result-card-head">
+        <div class="result-seq ${seqClass}">${MATCH_INFO[i].seq}</div>
+        <div class="result-body">
+          <div class="result-match-name">${MATCH_INFO[i].label}</div>
+          ${r
+            ? `<div class="result-score-display">🇰🇷 ${r[0]} : ${r[1]}</div>`
+            : `<div class="result-score-pend">결과 미입력</div>`}
+        </div>
+        <div class="result-pot ${potClass}">${potText}</div>
+      </div>`;
+
+    if (m.status === 'win') {
+      h += `<div class="result-winners">
+        <div class="result-winners-label">🎯 정답자</div>
+        ${m.winners.map(name => `<div class="winner-row">
+          <span class="winner-name">${name}</span>
+          <span class="winner-chip">${m.payout.toLocaleString()}원</span>
+        </div>`).join('')}
+      </div>`;
+    } else if (m.status === 'roll') {
+      h += `<div class="result-winners">
+        <div class="roll-msg">⏩ 아무도 맞추지 못했습니다 — 다음 경기로 이월</div>
+      </div>`;
+    } else {
+      h += `<div class="result-winners">
+        <div class="pend-msg">경기 결과 입력 후 확인 가능합니다</div>
+      </div>`;
+    }
+
+    h += `</div>`;
+  });
+
+  if (finalBanner) {
+    h += `<div class="final-split-card">
+      <div class="final-split-icon">🤝</div>
+      <div class="final-split-title">3경기 모두 아무도 맞추지 못했습니다</div>
+      <div class="final-split-sub">전원 균등 배분 · 1인당 ${finalBanner.amount.toLocaleString()}원</div>
+    </div>`;
+  }
+
+  h += `</div>`;
+  return h;
+}
+
 function render() {
-  const { account, matchOpen, picks, payments } = state;
+  const { account, matchOpen, picks, payments, results } = state;
   const fee = account?.fee || 5000;
   const anyOpen = matchOpen.some(Boolean);
   let html = '';
@@ -208,6 +320,9 @@ function render() {
     html += `<div class="no-open">🔴 현재 접수 중인 경기가 없습니다</div>`;
   }
 
+  /* ── 결과 & 상금 섹션 ── */
+  html += renderResults(picks, results, fee);
+
   if (picks.length) {
     const ml = ['🇰🇷vs🇨🇿','🇰🇷vs🇲🇽','🇰🇷vs🇿🇦'];
     html += `<div class="participants-card">
@@ -243,7 +358,6 @@ async function submitPick() {
   btn.disabled = true; btn.textContent = '저장 중...';
 
   try {
-    // 최신 데이터 먼저 읽어서 충돌 방지
     await loadData();
     if (state.picks.find(p => p.name === name)) {
       showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요');
@@ -252,7 +366,6 @@ async function submitPick() {
 
     const newState = { ...state, picks: [...state.picks, { name, scores, at: new Date().toISOString() }] };
 
-    // GitHub에 저장
     const body = {
       message: `pick: ${name} ${new Date().toISOString()}`,
       content: btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(newState, null, 2))))
