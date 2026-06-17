@@ -100,7 +100,6 @@
   .result-pot.rolled { color: var(--orange); }
   .result-pot.pend   { color: var(--muted); }
   .result-winners { border-top: 1px solid var(--border); padding: 0.75rem 1.25rem; background: var(--bg); }
-  .result-winners-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
   .winner-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
   .winner-name { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
   .winner-chip { font-size: 0.68rem; font-weight: 700; background: #EDF1FF; color: var(--navy); border: 1px solid #B8C8F0; border-radius: 8px; padding: 2px 8px; }
@@ -128,7 +127,11 @@
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const API = '/api/data';
+const GH_OWNER = 'goeseng';
+const GH_REPO  = 'wc2026-bet';
+const GH_FILE  = 'data.json';
+// index.html은 읽기전용 — 토큰 없이 public 레포에서 직접 읽기
+const RAW_URL = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/${GH_FILE}`;
 
 const MATCH_INFO = [
   { seq:'1차전', label:'🇰🇷 대한민국 vs 체코 🇨🇿',   short:'체코전',   date:'📅 6월 12일 (금)', time:'⏰ 오전 11:00', venue:'📍 과달라하라 아크론' },
@@ -146,30 +149,12 @@ function showToast(msg, dur=2500) {
 
 async function loadData() {
   try {
-    const res = await fetch(`${API}?t=${Date.now()}`);
+    // 토큰 없이 raw URL로 읽기 (public 레포라 가능)
+    const res = await fetch(`${RAW_URL}?t=${Date.now()}`);
     if (res.status === 404) { state = JSON.parse(JSON.stringify(DEFAULT)); return; }
     if (!res.ok) throw new Error(res.status);
-    const json = await res.json();
-    window._fileSha = json.sha;
-    state = JSON.parse(new TextDecoder('utf-8').decode(Uint8Array.from(atob(json.content.replace(/\n/g,'')), c => c.charCodeAt(0))));
+    state = await res.json();
   } catch(e) { state = JSON.parse(JSON.stringify(DEFAULT)); }
-}
-
-async function saveData(newState, message) {
-  const body = {
-    message: message || `update ${new Date().toISOString()}`,
-    content: btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(newState, null, 2))))
-  };
-  if (window._fileSha) body.sha = window._fileSha;
-  const res = await fetch(API, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
-  const json = await res.json();
-  window._fileSha = json.content.sha;
-  state = newState;
 }
 
 function calcPrize(picks, results, totalPot) {
@@ -196,9 +181,9 @@ function renderResults(picks, results, fee) {
   matchResults.forEach((m, i) => {
     const r = results[i];
     let seqClass, potText, potClass;
-    if (m.status === 'pend')      { seqClass='pend';   potText=`${m.pot.toLocaleString()}원 대기`;  potClass='pend'; }
-    else if (m.status === 'win')  { seqClass='done';   potText=`${m.pot.toLocaleString()}원 지급`;  potClass='win'; }
-    else                          { seqClass='rolled'; potText=`${m.pot.toLocaleString()}원 이월`;  potClass='rolled'; }
+    if (m.status === 'pend')     { seqClass='pend';   potText=`${m.pot.toLocaleString()}원 대기`;  potClass='pend'; }
+    else if (m.status === 'win') { seqClass='done';   potText=`${m.pot.toLocaleString()}원 지급`;  potClass='win'; }
+    else                         { seqClass='rolled'; potText=`${m.pot.toLocaleString()}원 이월`;  potClass='rolled'; }
     h += `<div class="result-card">
       <div class="result-card-head">
         <div class="result-seq ${seqClass}">${MATCH_INFO[i].seq}</div>
@@ -209,7 +194,7 @@ function renderResults(picks, results, fee) {
         <div class="result-pot ${potClass}">${potText}</div>
       </div>`;
     if (m.status === 'win') {
-      h += `<div class="result-winners"><div class="result-winners-label">🎯 정답자</div>${m.winners.map(name => `<div class="winner-row"><span class="winner-name">${name}</span><span class="winner-chip">${m.payout.toLocaleString()}원</span></div>`).join('')}</div>`;
+      h += `<div class="result-winners"><div style="font-size:0.68rem;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">🎯 정답자</div>${m.winners.map(name => `<div class="winner-row"><span class="winner-name">${name}</span><span class="winner-chip">${m.payout.toLocaleString()}원</span></div>`).join('')}</div>`;
     } else if (m.status === 'roll') {
       h += `<div class="result-winners"><div class="roll-msg">⏩ 아무도 맞추지 못했습니다 — 다음 경기로 이월</div></div>`;
     } else {
@@ -304,32 +289,7 @@ function render() {
 }
 
 async function submitPick() {
-  const btn = document.getElementById('submit-btn');
-  const name = document.getElementById('pname')?.value.trim();
-  if (!name) { showToast('⚠️ 이름을 입력해주세요'); return; }
-  if (state.picks.find(p => p.name === name)) { showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요'); return; }
-  const scores = [0,1,2].map(i => {
-    if (!state.matchOpen[i]) return null;
-    const a = document.getElementById(`s${i}a`)?.value;
-    const b = document.getElementById(`s${i}b`)?.value;
-    if (a === '' || b === '' || a == null) return undefined;
-    return [+a, +b];
-  });
-  if (scores.some(s => s === undefined)) { showToast('⚠️ 접수 중인 경기 스코어를 모두 입력해주세요'); return; }
-  btn.disabled = true; btn.textContent = '저장 중...';
-  try {
-    await loadData();
-    if (state.picks.find(p => p.name === name)) {
-      showToast('⚠️ 이미 같은 이름으로 제출된 예측이 있어요');
-      btn.disabled = false; btn.textContent = '예측 제출 →'; return;
-    }
-    await saveData({ ...state, picks: [...state.picks, { name, scores, at: new Date().toISOString() }] }, `pick: ${name}`);
-    showToast(`✅ ${name}님 예측 제출 완료!`);
-    render();
-  } catch(e) {
-    showToast(`❌ 제출 실패: ${e.message}`);
-    btn.disabled = false; btn.textContent = '예측 제출 →';
-  }
+  showToast('⚠️ 예측 제출은 관리자에게 문의해주세요');
 }
 
 async function init() { await loadData(); render(); }
