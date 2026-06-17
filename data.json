@@ -7,151 +7,103 @@
   },
   "matchOpen": [
     false,
-    false,
+    true,
     false
   ],
   "picks": [
     {
       "name": "이상민",
-      "scores": [
-        [
-          1,
-          3
-        ],
-        null,
-        null
+      "score": [
+        1,
+        3
       ],
       "at": "2026-06-11T01:12:59.591Z"
     },
     {
       "name": "김영삼",
-      "scores": [
-        [
-          2,
-          1
-        ],
-        null,
-        null
+      "score": [
+        2,
+        1
       ],
       "at": "2026-06-11T01:59:19.188Z"
     },
     {
       "name": "정문선",
-      "scores": [
-        [
-          2,
-          1
-        ],
-        null,
-        null
+      "score": [
+        2,
+        1
       ],
       "at": "2026-06-11T02:14:59.093Z"
     },
     {
       "name": "박진솔",
-      "scores": [
-        [
-          1,
-          1
-        ],
-        null,
-        null
+      "score": [
+        1,
+        1
       ],
       "at": "2026-06-11T02:26:24.798Z"
     },
     {
       "name": "강수철",
-      "scores": [
-        [
-          1,
-          2
-        ],
-        null,
-        null
+      "score": [
+        1,
+        2
       ],
       "at": "2026-06-11T04:02:06.715Z"
     },
     {
       "name": "정용원",
-      "scores": [
-        [
-          1,
-          1
-        ],
-        null,
-        null
+      "score": [
+        1,
+        1
       ],
       "at": "2026-06-11T04:23:34.820Z"
     },
     {
       "name": "이수빈",
-      "scores": [
-        [
-          1,
-          0
-        ],
-        null,
-        null
+      "score": [
+        1,
+        0
       ],
       "at": "2026-06-11T04:38:47.906Z"
     },
     {
       "name": "김다휘",
-      "scores": [
-        [
-          1,
-          1
-        ],
-        null,
-        null
+      "score": [
+        1,
+        1
       ],
       "at": "2026-06-11T05:01:21.196Z"
     },
     {
       "name": "김희성",
-      "scores": [
-        [
-          2,
-          2
-        ],
-        null,
-        null
+      "score": [
+        2,
+        2
       ],
       "at": "2026-06-11T07:54:25.087Z"
     },
     {
       "name": "이혜진",
-      "scores": [
-        [
-          1,
-          2
-        ],
-        null,
-        null
+      "score": [
+        1,
+        2
       ],
       "at": "2026-06-11T08:45:49.201Z"
     },
     {
       "name": "장선하",
-      "scores": [
-        [
-          1,
-          2
-        ],
-        null,
-        null
+      "score": [
+        1,
+        2
       ],
       "at": "2026-06-11T09:18:28.196Z"
     },
     {
       "name": "김남은",
-      "scores": [
-        [
-          2,
-          0
-        ],
-        null,
-        null
+      "score": [
+        2,
+        0
       ],
       "at": "2026-06-11T19:57:06.450Z"
     }
@@ -179,5 +131,8 @@
     ],
     null,
     null
-  ]
+  ],
+  "currentMatchIndex": 0,
+  "rollover": 0,
+  "matchHistory": []
 }
