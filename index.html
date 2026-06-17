@@ -51,6 +51,10 @@
   .rules-list li:last-child { border-bottom: none; }
   .rules-list li::before { content: ''; width: 6px; height: 6px; min-width: 6px; background: var(--red); border-radius: 50%; margin-top: 7px; }
   .rules-list strong { color: var(--navy); }
+  .current-banner { background: #EDF1FF; border: 1.5px solid #B8C8F0; border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .cb-label { font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .cb-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
+  .cb-rollover { font-size: 0.78rem; color: var(--orange); font-weight: 700; margin-top: 2px; }
   .match-sec-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
   .match-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
   .match-card.closed { opacity: 0.6; background: #F0F0EE; }
@@ -68,12 +72,6 @@
   .score-input:disabled { background: #E8E8E6; color: var(--muted); cursor: not-allowed; }
   .score-input::-webkit-outer-spin-button, .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .score-sep { font-size: 1.1rem; font-weight: 700; color: var(--muted); }
-  .name-row { display: flex; gap: 8px; margin-top: 1.5rem; }
-  .name-input { flex: 1; height: 48px; border: 1.5px solid var(--border); border-radius: 12px; padding: 0 14px; font-size: 0.9rem; font-family: 'Noto Sans KR', sans-serif; background: var(--card); color: var(--text); }
-  .name-input:focus { outline: none; border-color: var(--navy); }
-  .submit-btn { height: 48px; padding: 0 22px; background: var(--navy); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; white-space: nowrap; }
-  .submit-btn:hover { background: #001f52; }
-  .submit-btn:disabled { background: var(--muted); cursor: not-allowed; }
   .no-open { text-align: center; padding: 1.2rem; font-size: 0.85rem; color: var(--muted); background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-top: 1rem; }
   .participants-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; margin-top: 1.5rem; }
   .participants-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -82,36 +80,25 @@
   .p-row:last-child { border-bottom: none; }
   .p-name { font-weight: 700; color: var(--navy); min-width: 60px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
   .paid-mark { font-size: 0.65rem; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 10px; padding: 1px 6px; font-weight: 700; }
-  .p-scores { color: var(--muted); text-align: right; line-height: 1.8; }
-  .result-section { margin-top: 2rem; }
-  .result-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
-  .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 10px; }
-  .result-card-head { display: flex; align-items: center; gap: 12px; padding: 0.9rem 1.25rem; }
-  .result-seq { font-size: 0.7rem; font-weight: 700; border-radius: 8px; padding: 5px 9px; white-space: nowrap; text-align: center; min-width: 42px; }
-  .result-seq.done   { color: var(--navy); background: #EDF1FF; border: 1px solid #B8C8F0; }
-  .result-seq.rolled { color: var(--orange); background: var(--orange-bg); border: 1px solid var(--orange-border); }
-  .result-seq.pend   { color: var(--muted); background: var(--bg); border: 1px solid var(--border); }
-  .result-body { flex: 1; }
-  .result-match-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
-  .result-score-display { font-size: 1.4rem; font-weight: 700; color: var(--navy); letter-spacing: 2px; }
-  .result-score-pend { font-size: 0.82rem; color: var(--muted); font-style: italic; }
-  .result-pot { font-size: 0.78rem; font-weight: 700; white-space: nowrap; text-align: right; }
-  .result-pot.win    { color: var(--green); }
-  .result-pot.rolled { color: var(--orange); }
-  .result-pot.pend   { color: var(--muted); }
-  .result-winners { border-top: 1px solid var(--border); padding: 0.75rem 1.25rem; background: var(--bg); }
+  .p-scores { color: var(--muted); text-align: right; }
+  .history-section { margin-top: 2rem; }
+  .history-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .history-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 10px; }
+  .history-card-head { display: flex; align-items: center; gap: 12px; padding: 0.9rem 1.25rem; }
+  .history-body { flex: 1; }
+  .history-match-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+  .history-score-display { font-size: 1.3rem; font-weight: 700; color: var(--navy); letter-spacing: 2px; }
+  .history-pot { font-size: 0.78rem; font-weight: 700; white-space: nowrap; text-align: right; }
+  .history-pot.win    { color: var(--green); }
+  .history-pot.roll   { color: var(--orange); }
+  .history-winners { border-top: 1px solid var(--border); padding: 0.75rem 1.25rem; background: var(--bg); }
   .winner-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
   .winner-name { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
   .winner-chip { font-size: 0.68rem; font-weight: 700; background: #EDF1FF; color: var(--navy); border: 1px solid #B8C8F0; border-radius: 8px; padding: 2px 8px; }
   .roll-msg { font-size: 0.82rem; color: var(--orange); font-weight: 500; }
-  .pend-msg { font-size: 0.82rem; color: var(--muted); }
-  .final-split-card { background: #EDF1FF; border: 1.5px solid #B8C8F0; border-radius: 14px; padding: 1.25rem; text-align: center; margin-top: 0.5rem; }
-  .final-split-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-  .final-split-sub { font-size: 0.8rem; color: var(--muted); }
   .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; font-size: 0.85rem; font-weight: 500; padding: 10px 22px; border-radius: 30px; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 999; white-space: nowrap; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .footer-link { text-align: center; margin-top: 2.5rem; font-size: 0.75rem; color: var(--muted); }
-  .footer-link a { color: var(--muted); }
+  .footer-note { text-align: center; margin-top: 2.5rem; font-size: 0.75rem; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -123,14 +110,13 @@
 </div>
 <div class="container">
   <div id="app"><div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div></div>
-  <div class="footer-link"><a href="admin.html">관리자 페이지</a></div>
+  <div class="footer-note">예측 제출 및 결과 문의는 관리자에게 연락해주세요</div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
 const GH_OWNER = 'goeseng';
 const GH_REPO  = 'wc2026-bet';
 const GH_FILE  = 'data.json';
-// index.html은 읽기전용 — 토큰 없이 public 레포에서 직접 읽기
 const RAW_URL = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/${GH_FILE}`;
 
 const MATCH_INFO = [
@@ -138,7 +124,10 @@ const MATCH_INFO = [
   { seq:'2차전', label:'🇰🇷 대한민국 vs 멕시코 🇲🇽', short:'멕시코전', date:'📅 6월 19일 (금)', time:'⏰ 오전 10:00', venue:'📍 과달라하라 아크론' },
   { seq:'3차전', label:'🇰🇷 대한민국 vs 남아공 🇿🇦', short:'남아공전', date:'📅 6월 25일 (목)', time:'⏰ 오전 10:00', venue:'📍 몬테레이 BBVA' },
 ];
-const DEFAULT = { account:{bank:'',account:'',holder:'',fee:5000}, matchOpen:[false,false,false], picks:[], payments:{}, results:[null,null,null] };
+const DEFAULT = {
+  account:{bank:'',account:'',holder:'',fee:5000}, matchOpen:[false,false,false],
+  currentMatchIndex:0, rollover:0, picks:[], payments:{}, matchHistory:[]
+};
 let state = null;
 
 function showToast(msg, dur=2500) {
@@ -147,72 +136,63 @@ function showToast(msg, dur=2500) {
   setTimeout(() => t.classList.remove('show'), dur);
 }
 
+function migrateState(s) {
+  if (s.currentMatchIndex === undefined) s.currentMatchIndex = 0;
+  if (s.rollover === undefined) s.rollover = 0;
+  if (s.matchHistory === undefined) s.matchHistory = [];
+  if (s.picks === undefined) s.picks = [];
+  if (s.payments === undefined) s.payments = {};
+  s.picks = s.picks.map(p => {
+    if (p.scores && !p.score) {
+      const sc = p.scores[s.currentMatchIndex] || null;
+      return { name:p.name, score:sc, at:p.at };
+    }
+    return p;
+  });
+  return s;
+}
+
 async function loadData() {
   try {
-    // 토큰 없이 raw URL로 읽기 (public 레포라 가능)
     const res = await fetch(`${RAW_URL}?t=${Date.now()}`);
     if (res.status === 404) { state = JSON.parse(JSON.stringify(DEFAULT)); return; }
     if (!res.ok) throw new Error(res.status);
-    state = await res.json();
+    const raw = await res.json();
+    state = migrateState(raw);
   } catch(e) { state = JSON.parse(JSON.stringify(DEFAULT)); }
 }
 
-function calcPrize(picks, results, totalPot) {
-  const perGame = Math.floor(totalPot / 3);
-  let rollover = 0;
-  const out = results.map((r, i) => {
-    const pot = perGame + rollover;
-    if (!r) return { pot, winners: null, status: 'pend' };
-    const [ra, rb] = r;
-    const winners = picks.filter(p => p.scores?.[i]?.[0] === ra && p.scores?.[i]?.[1] === rb).map(p => p.name);
-    if (winners.length) { rollover = 0; return { pot, winners, status: 'win', payout: Math.floor(pot / winners.length) }; }
-    rollover = pot; return { pot, winners: [], status: 'roll' };
-  });
-  const allRoll = out.every(m => m.status === 'roll');
-  return { matchResults: out, finalBanner: allRoll && picks.length ? { amount: Math.floor(totalPot / picks.length) } : null };
-}
-
-function renderResults(picks, results, fee) {
-  const hasAnyResult = results.some(r => r !== null);
-  if (!hasAnyResult || !picks.length) return '';
-  const totalPot = picks.length * fee;
-  const { matchResults, finalBanner } = calcPrize(picks, results, totalPot);
-  let h = `<div class="result-section"><div class="result-section-label">경기 결과 &amp; 상금 현황</div>`;
-  matchResults.forEach((m, i) => {
-    const r = results[i];
-    let seqClass, potText, potClass;
-    if (m.status === 'pend')     { seqClass='pend';   potText=`${m.pot.toLocaleString()}원 대기`;  potClass='pend'; }
-    else if (m.status === 'win') { seqClass='done';   potText=`${m.pot.toLocaleString()}원 지급`;  potClass='win'; }
-    else                         { seqClass='rolled'; potText=`${m.pot.toLocaleString()}원 이월`;  potClass='rolled'; }
-    h += `<div class="result-card">
-      <div class="result-card-head">
-        <div class="result-seq ${seqClass}">${MATCH_INFO[i].seq}</div>
-        <div class="result-body">
-          <div class="result-match-name">${MATCH_INFO[i].label}</div>
-          ${r ? `<div class="result-score-display">🇰🇷 ${r[0]} : ${r[1]}</div>` : `<div class="result-score-pend">결과 미입력</div>`}
+function renderHistory(matchHistory) {
+  if (!matchHistory.length) return '';
+  let h = `<div class="history-section"><div class="history-section-label">지난 경기 결과 &amp; 당첨자</div>`;
+  matchHistory.forEach(rec => {
+    const mi = MATCH_INFO[rec.matchIndex];
+    const potClass = rec.status === 'win' ? 'win' : 'roll';
+    const potText = rec.status === 'win' ? `${rec.pot.toLocaleString()}원 지급` : `${rec.pot.toLocaleString()}원 이월`;
+    h += `<div class="history-card">
+      <div class="history-card-head">
+        <div class="history-body">
+          <div class="history-match-name">${mi ? mi.label : '경기 '+(rec.matchIndex+1)}</div>
+          ${rec.score ? `<div class="history-score-display">🇰🇷 ${rec.score[0]} : ${rec.score[1]}</div>` : `<div style="color:var(--muted);font-size:0.82rem;">결과 미입력</div>`}
         </div>
-        <div class="result-pot ${potClass}">${potText}</div>
+        <div class="history-pot ${potClass}">${potText}</div>
       </div>`;
-    if (m.status === 'win') {
-      h += `<div class="result-winners"><div style="font-size:0.68rem;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">🎯 정답자</div>${m.winners.map(name => `<div class="winner-row"><span class="winner-name">${name}</span><span class="winner-chip">${m.payout.toLocaleString()}원</span></div>`).join('')}</div>`;
-    } else if (m.status === 'roll') {
-      h += `<div class="result-winners"><div class="roll-msg">⏩ 아무도 맞추지 못했습니다 — 다음 경기로 이월</div></div>`;
+    if (rec.status === 'win') {
+      h += `<div class="history-winners"><div style="font-size:0.68rem;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">🎯 당첨자</div>${rec.winners.map(w => `<div class="winner-row"><span class="winner-name">${w.name}</span><span class="winner-chip">${w.amount.toLocaleString()}원</span></div>`).join('')}</div>`;
     } else {
-      h += `<div class="result-winners"><div class="pend-msg">경기 결과 입력 후 확인 가능합니다</div></div>`;
+      h += `<div class="history-winners"><div class="roll-msg">⏩ 아무도 맞추지 못했습니다 — 다음 경기로 이월</div></div>`;
     }
     h += `</div>`;
   });
-  if (finalBanner) {
-    h += `<div class="final-split-card"><div style="font-size:2rem;margin-bottom:6px;">🤝</div><div class="final-split-title">3경기 모두 아무도 맞추지 못했습니다</div><div class="final-split-sub">전원 균등 배분 · 1인당 ${finalBanner.amount.toLocaleString()}원</div></div>`;
-  }
   h += `</div>`;
   return h;
 }
 
 function render() {
-  const { account, matchOpen, picks, payments, results } = state;
+  const { account, matchOpen, picks, payments, currentMatchIndex, rollover, matchHistory } = state;
   const fee = account?.fee || 5000;
-  const anyOpen = matchOpen.some(Boolean);
+  const currentPot = picks.length * fee + rollover;
+  const cm = MATCH_INFO[currentMatchIndex];
   let html = '';
 
   if (account?.bank || account?.account || account?.holder) {
@@ -221,7 +201,7 @@ function render() {
       ? picks.map(p => `<div class="pay-chip ${payments[p.name]?'paid':'unpaid'}"><div class="pay-dot"></div>${p.name}${payments[p.name]?' ✓':''}</div>`).join('')
       : '<span style="font-size:0.8rem;color:var(--muted);">아직 참가자가 없습니다</span>';
     html += `<div class="account-card">
-      <div class="account-header"><div class="account-title">입금 안내</div><div class="total-badge">${picks.length}명 · ${(picks.length*fee).toLocaleString()}원</div></div>
+      <div class="account-header"><div class="account-title">입금 안내</div><div class="total-badge">${picks.length}명 · ${currentPot.toLocaleString()}원</div></div>
       <div class="account-row"><span class="acc-label">은행</span><span class="acc-value">${account.bank||'—'}</span></div>
       <div class="account-row"><span class="acc-label">계좌번호</span><span class="acc-value">${account.account||'—'}<button class="copy-btn" onclick="navigator.clipboard.writeText('${account.account}').then(()=>showToast('✅ 복사됨'))">복사</button></span></div>
       <div class="account-row" style="border-bottom:none;padding-bottom:0;"><span class="acc-label">예금주</span><span class="acc-value">${account.holder||'—'}</span></div>
@@ -235,16 +215,30 @@ function render() {
   document.getElementById('hero-badge').textContent = `참가비 ${fee.toLocaleString()}원 · 전액 상금`;
 
   html += `<div class="fee-banner"><div><div class="fee-label">1인 참가비</div><div class="fee-note">전액 상금으로 지급</div></div><div class="fee-amount">${fee.toLocaleString()}원</div></div>`;
+
   html += `<div class="rules-card"><div class="sec-label">규칙 안내</div><ul class="rules-list">
-    <li>각 경기마다 <strong>스코어를 완전히 맞춘 사람</strong>이 해당 경기 상금을 수령합니다.</li>
-    <li>한 경기에서 여러 명이 맞추면 <strong>균등 배분</strong>합니다.</li>
-    <li>아무도 맞추지 못한 경기의 상금은 <strong>다음 경기로 이월</strong>됩니다.</li>
-    <li>3경기 모두 아무도 맞추지 못하면 <strong>전액 균등 배분</strong>합니다.</li>
+    <li>각 경기는 <strong>독립적으로</strong> 진행되며, 스코어를 완전히 맞춘 사람이 그 경기의 전체 상금을 받습니다.</li>
+    <li>여러 명이 맞추면 <strong>균등 배분</strong>합니다.</li>
+    <li>아무도 맞추지 못하면 상금 전액이 <strong>다음 경기로 이월</strong>됩니다.</li>
+    <li>당첨자가 나온 경기가 끝나면, 다음 경기는 <strong>참가자를 새로 모집</strong>합니다.</li>
   </ul></div>`;
 
-  html += `<div class="match-sec-label">경기 일정 &amp; 스코어 예측</div>`;
+  html += `<div class="current-banner">
+    <div>
+      <div class="cb-label">현재 진행중</div>
+      <div class="cb-title">${cm.label}</div>
+      ${rollover > 0 ? `<div class="cb-rollover">⏩ 이전 이월금 ${rollover.toLocaleString()}원 포함</div>` : ''}
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:0.7rem;color:var(--muted);">현재 총 상금</div>
+      <div style="font-size:1.3rem;font-weight:700;color:var(--navy);">${currentPot.toLocaleString()}원</div>
+    </div>
+  </div>`;
+
+  html += `<div class="match-sec-label">경기 일정</div>`;
   MATCH_INFO.forEach((m, i) => {
     const isOpen = matchOpen[i];
+    const isCurrent = i === currentMatchIndex;
     html += `<div class="match-card ${isOpen?'':'closed'}">
       <div class="match-seq">${m.seq}</div>
       <div class="match-body">
@@ -252,44 +246,29 @@ function render() {
         <div class="match-meta"><span>${m.date}</span><span>${m.time}</span><span>${m.venue}</span></div>
         <span class="status-badge ${isOpen?'open':'closed'}">${isOpen?'🟢 예측 접수중':'🔴 예측 마감'}</span>
       </div>
-      <div class="score-box">
-        <input type="number" class="score-input" id="s${i}a" min="0" max="20" placeholder="0" ${isOpen?'':'disabled'}>
-        <span class="score-sep">:</span>
-        <input type="number" class="score-input" id="s${i}b" min="0" max="20" placeholder="0" ${isOpen?'':'disabled'}>
-      </div>
     </div>`;
   });
 
-  if (anyOpen) {
-    html += `<div class="name-row">
-      <input type="text" class="name-input" id="pname" placeholder="이름을 입력하세요" maxlength="10">
-      <button class="submit-btn" id="submit-btn" onclick="submitPick()">예측 제출 →</button>
-    </div>`;
-  } else {
-    html += `<div class="no-open">🔴 현재 접수 중인 경기가 없습니다</div>`;
+  if (!matchOpen.some(Boolean)) {
+    html += `<div class="no-open">🔴 현재 접수 중인 경기가 없습니다 · 예측 제출은 관리자에게 문의해주세요</div>`;
   }
 
-  html += renderResults(picks, results, fee);
-
   if (picks.length) {
-    const ml = ['🇰🇷vs🇨🇿','🇰🇷vs🇲🇽','🇰🇷vs🇿🇦'];
     html += `<div class="participants-card">
       <div class="participants-hd">
-        <div class="sec-label" style="margin:0;">참가자 현황 (${picks.length}명)</div>
-        <div class="prize-badge">총 상금 ${(picks.length*fee).toLocaleString()}원</div>
+        <div class="sec-label" style="margin:0;">참가자 현황 — ${cm.short} (${picks.length}명)</div>
+        <div class="prize-badge">총 상금 ${currentPot.toLocaleString()}원</div>
       </div>
       ${picks.map(p => `<div class="p-row">
         <span class="p-name">${p.name}${payments[p.name]?'<span class="paid-mark">입금</span>':''}</span>
-        <span class="p-scores">${(p.scores||[]).map((s,i) => s?`${ml[i]} <b>${s[0]}:${s[1]}</b>`:`${ml[i]} <span style="color:var(--muted)">미접수</span>`).join('<br>')}</span>
+        <span class="p-scores">${p.score ? `<b>${p.score[0]}:${p.score[1]}</b>` : '<span style="color:var(--muted)">미접수</span>'}</span>
       </div>`).join('')}
     </div>`;
   }
 
-  document.getElementById('app').innerHTML = html;
-}
+  html += renderHistory(matchHistory);
 
-async function submitPick() {
-  showToast('⚠️ 예측 제출은 관리자에게 문의해주세요');
+  document.getElementById('app').innerHTML = html;
 }
 
 async function init() { await loadData(); render(); }
