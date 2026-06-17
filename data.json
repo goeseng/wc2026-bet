@@ -10,7 +10,16 @@
     true,
     false
   ],
-  "picks": [],
+  "picks": [
+    {
+      "name": "이상민",
+      "score": [
+        1,
+        2
+      ],
+      "at": "2026-06-17T04:37:21.489Z"
+    }
+  ],
   "payments": {},
   "results": [
     [
